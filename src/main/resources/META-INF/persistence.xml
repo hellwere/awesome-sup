@@ -1,0 +1,41 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="ClientJpa">
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <!--Hibernate сам собирает описание всех Entity без явного объявления его в конфиге.-->
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver"
+                      value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:postgresql://localhost:5432/postgres"/>
+            <property name="hibernate.show_sql"
+                      value="true"/>
+            <property name="hibernate.hbm2ddl.auto"
+                      value="create"/>
+            <property name="hibernate.format_sql"
+                      value="true"/>
+
+            <!--Кэш второго уровня-->
+            <property name="hibernate.cache.use_second_level_cache"
+                      value="true"/>
+            <property name="hibernate.cache.region.factory_class"
+                      value="org.redisson.hibernate.RedissonRegionFactory"/>
+            <!--<property name="hibernate.javax.cache.provider"
+                      value="org.ehcache.jsr107.EhcacheCachingProvider"/>-->
+            <property name="hibernate.javax.cache.uri"
+                      value="META-INF/redisson.yaml"/>
+            <property name="hibernate.cache.use_query_cache"
+                      value="true"/>
+            <property name="hibernate.generate_statistics"
+                      value="true"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
