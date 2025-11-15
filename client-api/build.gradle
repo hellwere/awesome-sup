@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.5.6' // spring boot parent
+    id 'io.spring.dependency-management' version '1.1.5' // add and resolve spring boot parent dependencies
 }
 
 group = 'by.awesome.sup'
@@ -13,6 +15,11 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation project(':backend-api')
+
+    // OpenFeign
+    implementation platform('org.springframework.cloud:spring-cloud-dependencies:2024.0.2')
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.3.0'
 }
 
 test {

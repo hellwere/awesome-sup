@@ -31,7 +31,7 @@ public class Project {
     List<Tag> tags = new ArrayList<>();
     @Column(name = "creation_at")
     LocalDateTime creationAt;
-    Integer estimate;
+    int estimate;
     @Enumerated(EnumType.STRING)
     Priority priority;
 

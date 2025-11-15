@@ -1,8 +1,11 @@
 package by.awesome.sup.service.common;
 
+import by.awesome.sup.dto.common.project.ProjectDto;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.entity.common.project.Status;
 import by.awesome.sup.repository.common.ProjectRepository;
+import by.awesome.sup.service.common.mapper.ProjectMapper;
+import by.awesome.sup.service.common.mapper.ProjectMapperImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,9 +19,12 @@ import java.util.Optional;
 public class ProjectService {
 
     ProjectRepository repository;
+    ProjectMapper mapper;
 
-    public Project addProject(Project project) {
-        return repository.save(project);
+    public ProjectDto addProject(ProjectDto projectDto) {
+        Project project = mapper.toEntity(projectDto);   // DTO → Entity
+        Project saved = repository.save(project);        // сохраняем Entity
+        return mapper.toDto(saved);                      // Entity → DTO
     }
 
     public Project findById(Long id) {
@@ -28,7 +34,7 @@ public class ProjectService {
     public Project updateStatus(Long id, Status status) {
         Optional<Project> optional = repository.findById(id);
         Project project = optional.orElseThrow();
-        project.setStatus(status);
+//        project.setStatus(status);
         return repository.save(project);
     }
 
