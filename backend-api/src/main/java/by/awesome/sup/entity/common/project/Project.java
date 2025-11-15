@@ -49,5 +49,5 @@ public class Project {
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    List <User> users = new ArrayList<>();
+    List<User> users = new ArrayList<>();
 }

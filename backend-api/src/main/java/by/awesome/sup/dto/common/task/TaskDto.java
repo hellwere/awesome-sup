@@ -22,6 +22,6 @@ public class TaskDto {
     LocalDateTime creationAt;
     Integer estimate;
     Priority priority;
-    Attachment attachment;
+    List<Attachment> attachment;
     List<Timesheet> timesheets = new ArrayList<>();
 }

@@ -23,9 +23,6 @@ public class Permission {
     String name;
     String grants;
 
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    List<User> userId = new ArrayList<>();
+    @ManyToMany(mappedBy = "permissions")
+    List<User> users = new ArrayList<>();
 }

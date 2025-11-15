@@ -19,8 +19,8 @@ import java.util.List;
 public class User {
 
     @Id
-    @SequenceGenerator(name = "permissionSq", sequenceName = "permission_sq", schema = "sup", allocationSize = 1)
-    @GeneratedValue(generator = "permissionSq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "userSq", sequenceName = "user_sq", schema = "sup", allocationSize = 1)
+    @GeneratedValue(generator = "userSq", strategy = GenerationType.SEQUENCE)
     Long id;
     String name;
     String login;
@@ -29,8 +29,12 @@ public class User {
     @Column(name = "creation_at")
     LocalDateTime creationAt;
 
-    @OneToMany
-    @JoinColumn(name = "permission_id")
+    @ManyToMany
+    @JoinTable(
+            name = "user_permissions",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Permission> permissions = new ArrayList<>();

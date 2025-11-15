@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -18,7 +20,7 @@ public class Comment {
     @SequenceGenerator(name = "commentSq", sequenceName = "comment_sq", schema = "sup", allocationSize = 1)
     @GeneratedValue(generator = "commentSq", strategy = GenerationType.SEQUENCE)
     Long id;
-    @Column(name = "user_id")
-    User userId;
     String data;
+    @Column(name = "updated_at")
+    LocalDateTime updatedAt;
 }
