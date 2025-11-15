@@ -1,0 +1,4 @@
+rootProject.name = 'awesome-sup'
+
+include 'backend-api'
+include 'client-api'

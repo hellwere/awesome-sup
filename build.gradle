@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.6' // spring boot parent
+    id 'io.spring.dependency-management' version '1.1.5' // add and resolve spring boot parent dependencies
+}
+
+group = 'by.awesome.sup'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Test with Junit
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // --- Spring boot core ---
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // - Hibernate -
+    implementation 'org.postgresql:postgresql:42.7.7'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//    implementation 'org.redisson:redisson-hibernate-6:3.23.2'
+    // - Hibernate END -
+    // --- END ---
+
+    // Kafka
+    implementation 'org.springframework.kafka:spring-kafka:3.3.10'
+
+    // OpenFeign
+    implementation platform('org.springframework.cloud:spring-cloud-dependencies:2024.0.2')
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.3.0'
+
+    // MapStruct
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    // Swagger
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21);
+    }
+}
