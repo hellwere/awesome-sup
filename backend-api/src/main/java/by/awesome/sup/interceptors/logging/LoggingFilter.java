@@ -11,8 +11,11 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Interceptor logging rq and rs with body
+ */
 @Slf4j
-@Component
+//@Component
 public class LoggingFilter implements Filter {
 
     @Override

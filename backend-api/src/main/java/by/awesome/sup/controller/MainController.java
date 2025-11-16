@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 
     @GetMapping
-    public String getMainPage(Model model) {
-//        model.addAttribute("name", "my awesome name");
+    public String getMainPage() {
         return "hello";
     }
 }

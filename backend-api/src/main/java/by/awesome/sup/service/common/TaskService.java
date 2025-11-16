@@ -1,8 +1,10 @@
 package by.awesome.sup.service.common;
 
+import by.awesome.sup.dto.common.task.TaskDto;
 import by.awesome.sup.entity.common.task.Status;
 import by.awesome.sup.entity.common.task.Task;
 import by.awesome.sup.repository.common.TaskRepository;
+import by.awesome.sup.service.common.mapper.TaskMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,24 +18,28 @@ import java.util.Optional;
 public class TaskService {
 
     TaskRepository repository;
+    TaskMapper mapper;
 
-    public Task addTask(Task attachment) {
-        return repository.save(attachment);
+    public TaskDto addTask(TaskDto taskDto) {
+        Task task = repository.save(mapper.toCreateEntity(taskDto));
+        return mapper.toDto(task);
     }
 
-    public Task findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public TaskDto findById(Long id) {
+        Task task = repository.findById(id).orElseThrow();
+        return mapper.toDto(task);
     }
 
-    public Task updateStatus(Long id, Status status) {
+    public TaskDto updateStatus(Long id, Status status) {
         Optional<Task> optional = repository.findById(id);
         Task attachment = optional.orElseThrow();
         attachment.setStatus(status);
-        return repository.save(attachment);
+        Task newTask = repository.save(attachment);
+        return mapper.toDto(newTask);
     }
 
-    public Task delete(Task attachment) {
-        repository.delete(attachment);
-        return attachment;
+    public TaskDto delete(TaskDto taskDto) {
+        repository.delete(mapper.toEntity(taskDto));
+        return taskDto;
     }
 }

@@ -1,10 +1,11 @@
 package by.awesome.sup.dto.common.project;
 
-import by.awesome.sup.entity.authorization.User;
+import by.awesome.sup.dto.authorization.UserDto;
+import by.awesome.sup.dto.common.task.TaskDto;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.project.Status;
 import by.awesome.sup.entity.common.task.Tag;
-import by.awesome.sup.entity.common.task.Task;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -22,6 +23,7 @@ public class ProjectDto {
     LocalDateTime creationAt;
     Integer estimate;
     Priority priority;
-    List<Task> tasks = new ArrayList<>();
-    List <User> users = new ArrayList<>();
+    List<TaskDto> tasks = new ArrayList<>();
+    @Schema(description = "Список пользователей проекта", hidden = true)
+    List<UserDto> users = new ArrayList<>();
 }

@@ -1,24 +1,37 @@
 package by.awesome.sup.controller;
 
 import by.awesome.sup.dto.common.project.ProjectDto;
-import by.awesome.sup.entity.common.Priority;
-import by.awesome.sup.entity.common.project.Project;
+import by.awesome.sup.entity.common.project.Status;
 import by.awesome.sup.service.common.ProjectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/project")
 @RequiredArgsConstructor
 public class ProjectController {
 
     private final ProjectService service;
 
-    @GetMapping(value = "/addProject")
-    public ProjectDto getProjectById() {
-        ProjectDto projectDto = new ProjectDto();
-        projectDto.setPriority(Priority.HIGH);
+    @GetMapping("/get/{id}")
+    public ProjectDto getProject(@PathVariable Long id) {
+        return service.findById(id);
+    }
+
+    @PostMapping("/add")
+    public ProjectDto addProject(@RequestBody ProjectDto projectDto) {
         return service.addProject(projectDto);
+    }
+
+    @PostMapping("/update/{id}")
+    public ProjectDto updateProjectData(@PathVariable Long id, @Param("status") Status status) {
+        return service.updateStatus(id, status);
+    }
+
+    @PostMapping("/delete/{id}")
+    public ProjectDto deleteProject(@PathVariable Long id) {
+        ProjectDto projectDto = service.findById(id);
+        return service.delete(projectDto);
     }
 }

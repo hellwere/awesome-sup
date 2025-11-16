@@ -14,5 +14,5 @@ public class PermissionDto {
     Long id;
     String name;
     String grants;
-    List<User> users = new ArrayList<>();
+    List<UserDto> users = new ArrayList<>();
 }

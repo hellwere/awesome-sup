@@ -1,14 +1,7 @@
-plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.5.6' // spring boot parent
-    id 'io.spring.dependency-management' version '1.1.5' // add and resolve spring boot parent dependencies
-}
-
-group = 'by.awesome.sup'
-version = ''
-
-repositories {
-    mavenCentral()
+apply {
+    plugin 'java'
+    plugin 'org.springframework.boot'
+    plugin 'io.spring.dependency-management'
 }
 
 dependencies {
@@ -42,7 +35,11 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
     // Swagger
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.14'
+
+    // Metrics
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.15.6'
 }
 
 test {

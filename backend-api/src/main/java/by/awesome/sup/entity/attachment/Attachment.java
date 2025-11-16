@@ -19,7 +19,7 @@ public class Attachment {
     @SequenceGenerator(name = "attachmentSq", sequenceName = "attachment_sq", schema = "sup", allocationSize = 1)
     @GeneratedValue(generator = "attachmentSq", strategy = GenerationType.SEQUENCE)
     Long id;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "file_id")
     File file;
     @Column(name = "updated_at")

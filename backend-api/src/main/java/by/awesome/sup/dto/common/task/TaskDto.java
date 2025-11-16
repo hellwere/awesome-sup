@@ -1,5 +1,7 @@
 package by.awesome.sup.dto.common.task;
 
+import by.awesome.sup.dto.attachment.AttachmentDto;
+import by.awesome.sup.dto.common.TimesheetDto;
 import by.awesome.sup.entity.attachment.Attachment;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.Timesheet;
@@ -22,6 +24,6 @@ public class TaskDto {
     LocalDateTime creationAt;
     Integer estimate;
     Priority priority;
-    List<Attachment> attachment;
-    List<Timesheet> timesheets = new ArrayList<>();
+    List<AttachmentDto> attachment;
+    List<TimesheetDto> timesheets = new ArrayList<>();
 }

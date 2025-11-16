@@ -5,7 +5,6 @@ import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.entity.common.project.Status;
 import by.awesome.sup.repository.common.ProjectRepository;
 import by.awesome.sup.service.common.mapper.ProjectMapper;
-import by.awesome.sup.service.common.mapper.ProjectMapperImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,24 +21,26 @@ public class ProjectService {
     ProjectMapper mapper;
 
     public ProjectDto addProject(ProjectDto projectDto) {
-        Project project = mapper.toEntity(projectDto);   // DTO → Entity
-        Project saved = repository.save(project);        // сохраняем Entity
-        return mapper.toDto(saved);                      // Entity → DTO
+        Project createEntity = mapper.toCreateEntity(projectDto);
+        Project project = repository.save(createEntity);
+        return mapper.toDto(project);
     }
 
-    public Project findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public ProjectDto findById(Long id) {
+        Project project = repository.findById(id).orElseThrow();
+        return mapper.toDto(project);
     }
 
-    public Project updateStatus(Long id, Status status) {
+    public ProjectDto updateStatus(Long id, Status status) {
         Optional<Project> optional = repository.findById(id);
         Project project = optional.orElseThrow();
-//        project.setStatus(status);
-        return repository.save(project);
+        project.setStatus(status);
+        Project newProject = repository.save(project);
+        return mapper.toDto(newProject);
     }
 
-    public Project delete(Project project) {
-        repository.delete(project);
-        return project;
+    public ProjectDto delete(ProjectDto projectDto) {
+        repository.delete(mapper.toEntity(projectDto));
+        return projectDto;
     }
 }

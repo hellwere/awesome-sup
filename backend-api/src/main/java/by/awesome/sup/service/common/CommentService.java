@@ -1,7 +1,9 @@
 package by.awesome.sup.service.common;
 
+import by.awesome.sup.dto.common.CommentDto;
 import by.awesome.sup.entity.common.Comment;
 import by.awesome.sup.repository.common.CommentRepository;
+import by.awesome.sup.service.common.mapper.CommentMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,24 +17,28 @@ import java.util.Optional;
 public class CommentService {
 
     CommentRepository repository;
+    CommentMapper mapper;
 
-    public Comment addComment(Comment comment) {
-        return repository.save(comment);
+    public CommentDto addComment(CommentDto commentDto) {
+        Comment comment = repository.save(mapper.toCreateEntity(commentDto));
+        return mapper.toDto(comment);
     }
 
-    public Comment findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public CommentDto findById(Long id) {
+        Comment comment = repository.findById(id).orElseThrow();
+        return mapper.toDto(comment);
     }
 
-    public Comment updateCommentData(Long id, String data) {
+    public CommentDto updateCommentData(Long id, String data) {
         Optional<Comment> optional = repository.findById(id);
         Comment comment = optional.orElseThrow();
         comment.setData(data);
-        return repository.save(comment);
+        Comment newComment = repository.save(comment);
+        return mapper.toDto(newComment);
     }
 
-    public Comment delete(Comment comment) {
-        repository.delete(comment);
-        return comment;
+    public CommentDto delete(CommentDto commentDto) {
+        repository.delete(mapper.toEntity(commentDto));
+        return commentDto;
     }
 }

@@ -1,7 +1,9 @@
 package by.awesome.sup.service.authorization;
 
+import by.awesome.sup.dto.authorization.PermissionDto;
 import by.awesome.sup.entity.authorization.Permission;
 import by.awesome.sup.repository.authorization.PermissionRepository;
+import by.awesome.sup.service.authorization.mapper.PermissionMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,24 +17,28 @@ import java.util.Optional;
 public class PermissionService {
     
     PermissionRepository repository;
+    PermissionMapper mapper;
     
-    public Permission addPermission(Permission permission) {
-        return repository.save(permission);
+    public PermissionDto addPermission(PermissionDto permissionDto) {
+        Permission newPermission = repository.save(mapper.toEntity(permissionDto));
+        return mapper.toDto(newPermission);
     }
 
-    public Permission findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public PermissionDto findById(Long id) {
+        Permission permission = repository.findById(id).orElseThrow();
+        return mapper.toDto(permission);
     }
 
-    public Permission updatePermission(Long id, String name) {
+    public PermissionDto updatePermission(Long id, String name) {
         Optional<Permission> optional = repository.findById(id);
         Permission permission = optional.orElseThrow();
         permission.setName(name);
-        return repository.save(permission);
+        Permission newPermission = repository.save(permission);
+        return mapper.toDto(newPermission);
     }
 
-    public Permission delete(Permission permission) {
-        repository.delete(permission);
-        return permission;
+    public PermissionDto delete(PermissionDto permissionDto) {
+        repository.delete(mapper.toEntity(permissionDto));
+        return permissionDto;
     }
 }

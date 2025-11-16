@@ -1,7 +1,9 @@
 package by.awesome.sup.service.attachment;
 
+import by.awesome.sup.dto.attachment.AttachmentDto;
 import by.awesome.sup.entity.attachment.Attachment;
 import by.awesome.sup.repository.attachment.AttachmentRepository;
+import by.awesome.sup.service.attachment.mapper.AttachmentMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,24 +17,29 @@ import java.util.Optional;
 public class AttachmentService {
 
     AttachmentRepository repository;
+    AttachmentMapper mapper;
 
-    public Attachment addAttachment(Attachment attachment) {
-        return repository.save(attachment);
+    public AttachmentDto addAttachment(AttachmentDto attachmentDto) {
+        Attachment attachment1 = mapper.toEntity(attachmentDto);
+        Attachment attachment = repository.save(attachment1);
+        return mapper.toDto(attachment);
     }
 
-    public Attachment findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public AttachmentDto findById(Long id) {
+        Attachment attachment = repository.findById(id).orElseThrow();
+        return mapper.toDto(attachment);
     }
 
-    public Attachment updateFileData(Long id, byte[] data) {
+    public AttachmentDto updateFileData(Long id, byte[] data) {
         Optional<Attachment> optional = repository.findById(id);
         Attachment attachment = optional.orElseThrow();
         attachment.getFile().setData(data);
-        return repository.save(attachment);
+        Attachment newAttachment = repository.save(attachment);
+        return mapper.toDto(newAttachment);
     }
 
-    public Attachment delete(Attachment attachment) {
-        repository.delete(attachment);
-        return attachment;
+    public AttachmentDto delete(AttachmentDto attachmentDto) {
+        repository.delete(mapper.toEntity(attachmentDto));
+        return attachmentDto;
     }
 }
