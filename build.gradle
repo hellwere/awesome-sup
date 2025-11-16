@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.6' apply false// spring boot parent
+    id 'io.spring.dependency-management' version '1.1.5' apply false // add and resolve spring boot parent dependencies
+}
+
+group = 'by.awesome.sup'
+version = '1.0-SNAPSHOT'
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21);
+    }
+}
