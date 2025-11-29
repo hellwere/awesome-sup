@@ -2,7 +2,7 @@ package by.awesome.sup.service.authorization;
 
 import by.awesome.sup.dto.authorization.UserDto;
 import by.awesome.sup.entity.authorization.User;
-import by.awesome.sup.repository.authorization.UserRepository;
+import by.awesome.sup.repository.UserRepository;
 import by.awesome.sup.service.authorization.mapper.UserMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

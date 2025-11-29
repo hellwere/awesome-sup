@@ -3,6 +3,7 @@ package by.awesome.sup.controller;
 import by.awesome.sup.dto.common.task.TaskDto;
 import by.awesome.sup.entity.common.task.Status;
 import by.awesome.sup.service.common.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class TaskController {
     }
 
     @PostMapping("/add")
-    public TaskDto addTask(@RequestBody TaskDto taskDto) {
+    public TaskDto addTask(@Valid @RequestBody TaskDto taskDto) {
         return service.addTask(taskDto);
     }
 

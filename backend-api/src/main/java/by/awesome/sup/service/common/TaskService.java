@@ -3,7 +3,7 @@ package by.awesome.sup.service.common;
 import by.awesome.sup.dto.common.task.TaskDto;
 import by.awesome.sup.entity.common.task.Status;
 import by.awesome.sup.entity.common.task.Task;
-import by.awesome.sup.repository.common.TaskRepository;
+import by.awesome.sup.repository.TaskRepository;
 import by.awesome.sup.service.common.mapper.TaskMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

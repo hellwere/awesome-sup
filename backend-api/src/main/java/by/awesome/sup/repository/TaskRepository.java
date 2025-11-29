@@ -1,4 +1,4 @@
-package by.awesome.sup.repository.common;
+package by.awesome.sup.repository;
 
 import by.awesome.sup.entity.common.task.Task;
 import org.springframework.data.repository.CrudRepository;

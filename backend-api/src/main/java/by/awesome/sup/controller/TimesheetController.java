@@ -2,6 +2,7 @@ package by.awesome.sup.controller;
 
 import by.awesome.sup.dto.common.TimesheetDto;
 import by.awesome.sup.service.common.TimesheetService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class TimesheetController {
     }
 
     @PostMapping("/add")
-    public TimesheetDto addTimesheet(@RequestBody TimesheetDto timesheetDto) {
+    public TimesheetDto addTimesheet(@Valid @RequestBody TimesheetDto timesheetDto) {
         return service.addTimesheet(timesheetDto);
     }
 
