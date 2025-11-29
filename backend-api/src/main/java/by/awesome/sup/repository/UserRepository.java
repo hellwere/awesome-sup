@@ -1,4 +1,4 @@
-package by.awesome.sup.repository.authorization;
+package by.awesome.sup.repository;
 
 import by.awesome.sup.entity.authorization.User;
 import org.springframework.data.repository.CrudRepository;

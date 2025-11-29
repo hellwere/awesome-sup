@@ -2,6 +2,7 @@ package by.awesome.sup.controller;
 
 import by.awesome.sup.dto.attachment.AttachmentDto;
 import by.awesome.sup.service.attachment.AttachmentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class AttachmentController {
     }
 
     @PostMapping("/add")
-    public AttachmentDto addAttachment(@RequestBody AttachmentDto attachmentDto) {
+    public AttachmentDto addAttachment(@Valid @RequestBody AttachmentDto attachmentDto) {
         return service.addAttachment(attachmentDto);
     }
 
