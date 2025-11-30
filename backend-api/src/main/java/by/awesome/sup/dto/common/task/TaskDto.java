@@ -2,11 +2,10 @@ package by.awesome.sup.dto.common.task;
 
 import by.awesome.sup.dto.attachment.AttachmentDto;
 import by.awesome.sup.dto.common.TimesheetDto;
-import by.awesome.sup.entity.attachment.Attachment;
 import by.awesome.sup.entity.common.Priority;
-import by.awesome.sup.entity.common.Timesheet;
 import by.awesome.sup.entity.common.task.Status;
 import by.awesome.sup.entity.common.task.Tag;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -19,10 +18,12 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskDto {
     Long id;
+    @NotNull
     Status status;
     List<Tag> tags = new ArrayList<>();
     LocalDateTime creationAt;
     Integer estimate;
+    @NotNull
     Priority priority;
     List<AttachmentDto> attachment;
     List<TimesheetDto> timesheets = new ArrayList<>();

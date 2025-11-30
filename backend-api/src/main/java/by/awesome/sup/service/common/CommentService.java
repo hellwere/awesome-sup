@@ -2,7 +2,7 @@ package by.awesome.sup.service.common;
 
 import by.awesome.sup.dto.common.CommentDto;
 import by.awesome.sup.entity.common.Comment;
-import by.awesome.sup.repository.common.CommentRepository;
+import by.awesome.sup.repository.CommentRepository;
 import by.awesome.sup.service.common.mapper.CommentMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,5 @@
 package by.awesome.sup.entity.common;
 
-import by.awesome.sup.entity.authorization.User;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

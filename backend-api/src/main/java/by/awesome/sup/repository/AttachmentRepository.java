@@ -1,4 +1,4 @@
-package by.awesome.sup.repository.attachment;
+package by.awesome.sup.repository;
 
 import by.awesome.sup.entity.attachment.Attachment;
 import org.springframework.data.repository.CrudRepository;

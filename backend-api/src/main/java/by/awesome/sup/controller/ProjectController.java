@@ -3,6 +3,7 @@ package by.awesome.sup.controller;
 import by.awesome.sup.dto.common.project.ProjectDto;
 import by.awesome.sup.entity.common.project.Status;
 import by.awesome.sup.service.common.ProjectService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ProjectController {
     }
 
     @PostMapping("/add")
-    public ProjectDto addProject(@RequestBody ProjectDto projectDto) {
+    public ProjectDto addProject(@Valid @RequestBody ProjectDto projectDto) {
         return service.addProject(projectDto);
     }
 
