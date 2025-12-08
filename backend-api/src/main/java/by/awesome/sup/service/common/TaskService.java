@@ -1,6 +1,6 @@
 package by.awesome.sup.service.common;
 
-import by.awesome.sup.dto.common.task.TaskDto;
+import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.entity.common.task.Status;
 import by.awesome.sup.entity.common.task.Task;
 import by.awesome.sup.repository.TaskRepository;
@@ -20,17 +20,17 @@ public class TaskService {
     TaskRepository repository;
     TaskMapper mapper;
 
-    public TaskDto addTask(TaskDto taskDto) {
+    public TaskDtoRequest addTask(TaskDtoRequest taskDto) {
         Task task = repository.save(mapper.toCreateEntity(taskDto));
         return mapper.toDto(task);
     }
 
-    public TaskDto findById(Long id) {
+    public TaskDtoRequest findById(Long id) {
         Task task = repository.findById(id).orElseThrow();
         return mapper.toDto(task);
     }
 
-    public TaskDto updateStatus(Long id, Status status) {
+    public TaskDtoRequest updateStatus(Long id, Status status) {
         Optional<Task> optional = repository.findById(id);
         Task attachment = optional.orElseThrow();
         attachment.setStatus(status);
@@ -38,7 +38,7 @@ public class TaskService {
         return mapper.toDto(newTask);
     }
 
-    public TaskDto delete(TaskDto taskDto) {
+    public TaskDtoRequest delete(TaskDtoRequest taskDto) {
         repository.delete(mapper.toEntity(taskDto));
         return taskDto;
     }

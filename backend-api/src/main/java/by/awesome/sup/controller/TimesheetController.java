@@ -1,6 +1,6 @@
 package by.awesome.sup.controller;
 
-import by.awesome.sup.dto.common.TimesheetDto;
+import by.awesome.sup.dto.common.TimesheetDtoRequest;
 import by.awesome.sup.service.common.TimesheetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,23 +15,23 @@ public class TimesheetController {
     private final TimesheetService service;
 
     @GetMapping("/get/{id}")
-    public TimesheetDto getTimesheet(@PathVariable Long id) {
+    public TimesheetDtoRequest getTimesheet(@PathVariable Long id) {
         return service.findById(id);
     }
 
     @PostMapping("/add")
-    public TimesheetDto addTimesheet(@Valid @RequestBody TimesheetDto timesheetDto) {
+    public TimesheetDtoRequest addTimesheet(@Valid @RequestBody TimesheetDtoRequest timesheetDto) {
         return service.addTimesheet(timesheetDto);
     }
 
     @GetMapping("/update/{id}")
-    public TimesheetDto updateTimesheetData(@PathVariable Long id, @Param("timeCount") double timeCount) {
+    public TimesheetDtoRequest updateTimesheetData(@PathVariable Long id, @Param("timeCount") double timeCount) {
         return service.updateTime(id, timeCount);
     }
 
     @PostMapping("/delete/{id}")
-    public TimesheetDto deleteTimesheet(@PathVariable Long id) {
-        TimesheetDto timesheetDto = service.findById(id);
+    public TimesheetDtoRequest deleteTimesheet(@PathVariable Long id) {
+        TimesheetDtoRequest timesheetDto = service.findById(id);
         return service.delete(timesheetDto);
     }
 }

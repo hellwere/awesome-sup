@@ -1,6 +1,6 @@
 package by.awesome.sup.integration.feign;
 
-import by.awesome.sup.dto.common.project.ProjectDto;
+import by.awesome.sup.dto.common.project.ProjectDtoRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface ProjectClient {
 
     @PostMapping
-    ProjectDto getProjectById(Long id);
+    ProjectDtoRequest getProjectById(Long id);
 }

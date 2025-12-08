@@ -1,6 +1,6 @@
 package by.awesome.sup.service.attachment;
 
-import by.awesome.sup.dto.attachment.AttachmentDto;
+import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
 import by.awesome.sup.entity.attachment.Attachment;
 import by.awesome.sup.repository.AttachmentRepository;
 import by.awesome.sup.service.attachment.mapper.AttachmentMapper;
@@ -20,18 +20,18 @@ public class AttachmentService {
     AttachmentRepository repository;
     AttachmentMapper mapper;
 
-    public AttachmentDto addAttachment(@Valid AttachmentDto attachmentDto) {
+    public AttachmentDtoRequest addAttachment(@Valid AttachmentDtoRequest attachmentDto) {
         Attachment attachment1 = mapper.toEntity(attachmentDto);
         Attachment attachment = repository.save(attachment1);
         return mapper.toDto(attachment);
     }
 
-    public AttachmentDto findById(Long id) {
+    public AttachmentDtoRequest findById(Long id) {
         Attachment attachment = repository.findById(id).orElseThrow();
         return mapper.toDto(attachment);
     }
 
-    public AttachmentDto updateFileData(Long id, byte[] data) {
+    public AttachmentDtoRequest updateFileData(Long id, byte[] data) {
         Optional<Attachment> optional = repository.findById(id);
         Attachment attachment = optional.orElseThrow();
         attachment.getFile().setData(data);
@@ -39,7 +39,7 @@ public class AttachmentService {
         return mapper.toDto(newAttachment);
     }
 
-    public AttachmentDto delete(AttachmentDto attachmentDto) {
+    public AttachmentDtoRequest delete(AttachmentDtoRequest attachmentDto) {
         repository.delete(mapper.toEntity(attachmentDto));
         return attachmentDto;
     }

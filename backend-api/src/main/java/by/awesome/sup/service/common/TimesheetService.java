@@ -1,6 +1,6 @@
 package by.awesome.sup.service.common;
 
-import by.awesome.sup.dto.common.TimesheetDto;
+import by.awesome.sup.dto.common.TimesheetDtoRequest;
 import by.awesome.sup.entity.common.Timesheet;
 import by.awesome.sup.repository.TimesheetRepository;
 import by.awesome.sup.service.common.mapper.TimesheetMapper;
@@ -20,17 +20,17 @@ public class TimesheetService {
     TimesheetRepository repository;
     TimesheetMapper mapper;
 
-    public TimesheetDto addTimesheet(TimesheetDto taskDto) {
+    public TimesheetDtoRequest addTimesheet(TimesheetDtoRequest taskDto) {
         Timesheet task = repository.save(mapper.toCreateEntity(taskDto));
         return mapper.toDto(task);
     }
 
-    public TimesheetDto findById(Long id) {
+    public TimesheetDtoRequest findById(Long id) {
         Timesheet task = repository.findById(id).orElseThrow();
         return mapper.toDto(task);
     }
 
-    public TimesheetDto updateTime(Long id, Double countTime) {
+    public TimesheetDtoRequest updateTime(Long id, Double countTime) {
         Optional<Timesheet> optional = repository.findById(id);
         Timesheet attachment = optional.orElseThrow();
         attachment.setLoggedTime(countTime);
@@ -39,7 +39,7 @@ public class TimesheetService {
         return mapper.toDto(newTimesheet);
     }
 
-    public TimesheetDto delete(TimesheetDto taskDto) {
+    public TimesheetDtoRequest delete(TimesheetDtoRequest taskDto) {
         repository.delete(mapper.toEntity(taskDto));
         return taskDto;
     }

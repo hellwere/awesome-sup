@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FileDto {
+public class FileDtoRequest {
     Long id;
     @NotBlank
     String data;

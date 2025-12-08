@@ -1,7 +1,6 @@
-package by.awesome.sup.dto.common;
+package by.awesome.sup.dto.attachment;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -10,10 +9,9 @@ import java.time.LocalDateTime;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TimesheetDto {
+public class AttachmentDtoResponse {
     Long id;
     @NotNull
-    @Positive
-    Double loggedTime;
-    LocalDateTime loggedAt;
+    FileDtoRequest file;
+    LocalDateTime updatedAt;
 }

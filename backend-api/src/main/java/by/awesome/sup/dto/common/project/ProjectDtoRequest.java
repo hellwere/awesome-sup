@@ -1,7 +1,7 @@
 package by.awesome.sup.dto.common.project;
 
-import by.awesome.sup.dto.authorization.UserDto;
-import by.awesome.sup.dto.common.task.TaskDto;
+import by.awesome.sup.dto.authorization.UserDtoRequest;
+import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.project.Status;
 import by.awesome.sup.entity.common.task.Tag;
@@ -17,16 +17,12 @@ import java.util.List;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProjectDto {
+public class ProjectDtoRequest {
     Long id;
     @NotNull
     Status status;
     List<Tag> tags = new ArrayList<>();
-    LocalDateTime creationAt;
     Integer estimate;
     @NotNull
     Priority priority;
-    List<TaskDto> tasks = new ArrayList<>();
-    @Schema(description = "Список пользователей проекта", hidden = true)
-    List<UserDto> users = new ArrayList<>();
 }

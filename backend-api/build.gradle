@@ -19,6 +19,8 @@ dependencies {
     // - Hibernate -
     implementation 'org.postgresql:postgresql:42.7.7'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // Security
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.5.8'
 //    implementation 'org.redisson:redisson-hibernate-6:3.23.2'
     // - Hibernate END -
     // --- END ---

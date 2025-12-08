@@ -29,5 +29,4 @@ public class AspectControllerLogging {
     public void logError(Exception ex) {
         log.error("Error processing {}", ex.getMessage());
     }
-
 }

@@ -1,6 +1,6 @@
 package by.awesome.sup.service.common;
 
-import by.awesome.sup.dto.common.project.ProjectDto;
+import by.awesome.sup.dto.common.project.ProjectDtoRequest;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.entity.common.project.Status;
 import by.awesome.sup.repository.ProjectRepository;
@@ -20,18 +20,18 @@ public class ProjectService {
     ProjectRepository repository;
     ProjectMapper mapper;
 
-    public ProjectDto addProject(ProjectDto projectDto) {
+    public ProjectDtoRequest addProject(ProjectDtoRequest projectDto) {
         Project createEntity = mapper.toCreateEntity(projectDto);
         Project project = repository.save(createEntity);
         return mapper.toDto(project);
     }
 
-    public ProjectDto findById(Long id) {
+    public ProjectDtoRequest findById(Long id) {
         Project project = repository.findById(id).orElseThrow();
         return mapper.toDto(project);
     }
 
-    public ProjectDto updateStatus(Long id, Status status) {
+    public ProjectDtoRequest updateStatus(Long id, Status status) {
         Optional<Project> optional = repository.findById(id);
         Project project = optional.orElseThrow();
         project.setStatus(status);
@@ -39,7 +39,7 @@ public class ProjectService {
         return mapper.toDto(newProject);
     }
 
-    public ProjectDto delete(ProjectDto projectDto) {
+    public ProjectDtoRequest delete(ProjectDtoRequest projectDto) {
         repository.delete(mapper.toEntity(projectDto));
         return projectDto;
     }

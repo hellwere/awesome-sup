@@ -13,7 +13,7 @@ import java.util.UUID;
 
 
 @Slf4j
-@Component
+//@Component
 public class MDCOncePerRequestFilter extends OncePerRequestFilter {
 
     @Override

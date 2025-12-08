@@ -1,6 +1,6 @@
 package by.awesome.sup.service.common;
 
-import by.awesome.sup.dto.common.CommentDto;
+import by.awesome.sup.dto.common.CommentDtoRequest;
 import by.awesome.sup.entity.common.Comment;
 import by.awesome.sup.repository.CommentRepository;
 import by.awesome.sup.service.common.mapper.CommentMapper;
@@ -19,17 +19,17 @@ public class CommentService {
     CommentRepository repository;
     CommentMapper mapper;
 
-    public CommentDto addComment(CommentDto commentDto) {
+    public CommentDtoRequest addComment(CommentDtoRequest commentDto) {
         Comment comment = repository.save(mapper.toCreateEntity(commentDto));
         return mapper.toDto(comment);
     }
 
-    public CommentDto findById(Long id) {
+    public CommentDtoRequest findById(Long id) {
         Comment comment = repository.findById(id).orElseThrow();
         return mapper.toDto(comment);
     }
 
-    public CommentDto updateCommentData(Long id, String data) {
+    public CommentDtoRequest updateCommentData(Long id, String data) {
         Optional<Comment> optional = repository.findById(id);
         Comment comment = optional.orElseThrow();
         comment.setData(data);
@@ -37,7 +37,7 @@ public class CommentService {
         return mapper.toDto(newComment);
     }
 
-    public CommentDto delete(CommentDto commentDto) {
+    public CommentDtoRequest delete(CommentDtoRequest commentDto) {
         repository.delete(mapper.toEntity(commentDto));
         return commentDto;
     }
