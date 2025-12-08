@@ -7,6 +7,7 @@ import by.awesome.sup.entity.common.task.Task;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,7 +30,8 @@ public class Project {
     Status status;
     @Enumerated(EnumType.STRING)
     List<Tag> tags = new ArrayList<>();
-    @Column(name = "creation_at")
+    @CreationTimestamp
+    @Column(name = "creation_at", nullable = false, updatable = false)
     LocalDateTime creationAt;
     int estimate;
     @Enumerated(EnumType.STRING)

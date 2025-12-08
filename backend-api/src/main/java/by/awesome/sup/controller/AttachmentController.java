@@ -1,6 +1,7 @@
 package by.awesome.sup.controller;
 
 import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
+import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
 import by.awesome.sup.service.attachment.AttachmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,23 +15,22 @@ public class AttachmentController {
     private final AttachmentService service;
 
     @GetMapping("/get/{id}")
-    public AttachmentDtoRequest getAttachment(@PathVariable Long id) {
+    public AttachmentDtoResponse getAttachment(@PathVariable Long id) {
         return service.findById(id);
     }
 
     @PostMapping("/add")
-    public AttachmentDtoRequest addAttachment(@Valid @RequestBody AttachmentDtoRequest attachmentDto) {
+    public AttachmentDtoResponse addAttachment(@Valid @RequestBody AttachmentDtoRequest attachmentDto) {
         return service.addAttachment(attachmentDto);
     }
 
     @PostMapping("/update/{id}")
-    public AttachmentDtoRequest updateAttachmentData(@PathVariable Long id, @RequestBody String data) {
+    public AttachmentDtoResponse updateAttachmentData(@PathVariable Long id, @RequestBody String data) {
         return service.updateFileData(id, data.getBytes());
     }
 
     @PostMapping("/delete/{id}")
-    public AttachmentDtoRequest deleteAttachment(@PathVariable Long id) {
-        AttachmentDtoRequest attachmentDto = service.findById(id);
-        return service.delete(attachmentDto);
+    public AttachmentDtoResponse deleteAttachment(@PathVariable Long id) {
+        return service.delete(id);
     }
 }

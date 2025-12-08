@@ -3,6 +3,7 @@ package by.awesome.sup.entity.attachment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +23,7 @@ public class Attachment {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "file_id")
     File file;
-    @Column(name = "updated_at")
+    @CreationTimestamp
+    @Column(name = "updated_at", nullable = false, updatable = false)
     LocalDateTime updatedAt;
 }

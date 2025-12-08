@@ -1,6 +1,7 @@
 package by.awesome.sup.service.common.mapper;
 
 import by.awesome.sup.dto.common.project.ProjectDtoRequest;
+import by.awesome.sup.dto.common.project.ProjectDtoResponse;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.service.attachment.mapper.FileMapper;
 import org.mapstruct.Mapper;
@@ -10,7 +11,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = FileMapper.class)
 public interface ProjectMapper {
     @Named("toDto")
-    ProjectDtoRequest toDto(Project project);
+    ProjectDtoResponse toDto(Project project);
     @Named("toEntity")
     Project toEntity(ProjectDtoRequest projectDto);
 

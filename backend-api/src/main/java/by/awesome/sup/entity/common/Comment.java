@@ -3,6 +3,7 @@ package by.awesome.sup.entity.common;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +21,7 @@ public class Comment {
     @GeneratedValue(generator = "commentSq", strategy = GenerationType.SEQUENCE)
     Long id;
     String data;
-    @Column(name = "updated_at")
+    @CreationTimestamp
+    @Column(name = "updated_at", nullable = false, updatable = false)
     LocalDateTime updatedAt;
 }

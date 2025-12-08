@@ -4,6 +4,7 @@ import by.awesome.sup.entity.common.project.Project;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ public class User {
     String login;
     String password;
     String email;
-    @Column(name = "creation_at")
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     LocalDateTime creationAt;
 
     @ManyToMany
