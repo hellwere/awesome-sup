@@ -23,6 +23,6 @@ public class UserDtoResponse {
     @NotBlank
     String email;
     LocalDateTime creationAt;
-    List<PermissionDtoRequest> permissions = new ArrayList<>();
+//    List<PermissionDtoRequest> permissions = new ArrayList<>();
     List<ProjectDtoRequest> projects = new ArrayList<>();
 }

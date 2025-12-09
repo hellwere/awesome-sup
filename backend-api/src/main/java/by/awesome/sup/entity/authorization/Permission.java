@@ -23,6 +23,6 @@ public class Permission {
     String name;
     String grants;
 
-    @ManyToMany(mappedBy = "permissions")
-    List<User> users = new ArrayList<>();
+    /*@ManyToMany(mappedBy = "permissions")
+    List<User> users = new ArrayList<>();*/
 }

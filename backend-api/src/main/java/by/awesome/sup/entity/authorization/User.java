@@ -31,7 +31,7 @@ public class User {
     @Column(name = "created_at", nullable = false, updatable = false)
     LocalDateTime creationAt;
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(
             name = "user_permissions",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -39,9 +39,9 @@ public class User {
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    List<Permission> permissions = new ArrayList<>();
+    List<Permission> permissions = new ArrayList<>();*/
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Project> projects = new ArrayList<>();

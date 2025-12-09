@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
@@ -25,19 +25,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // отключаем CSRF для REST
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/**").permitAll() // открываем контроллер
+                        .requestMatchers("/users/**").permitAll()
+//                        .requestMatchers("/error/**").permitAll()
                         .requestMatchers(
-                                "/error/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
                                 "/webjars/**").permitAll()
                         .anyRequest().authenticated() // остальные требуют авторизацию
                 )
-//                .exceptionHandling(ex-> {
-//                        ex.authenticationEntryPoint(new ForbiddenException());
-//                        ex.accessDeniedHandler(new AccessException());
-//                })
                 .build();
     }
 }

@@ -6,6 +6,7 @@ import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.service.attachment.mapper.FileMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring", uses = FileMapper.class)
@@ -14,6 +15,9 @@ public interface UserMapper {
     UserDtoResponse toDto(User user);
     @Named("toEntity")
     User toEntity(UserDtoRequest userDto);
+    @Named("updateUserFromDto")
+    @Mapping(target = "login", ignore = true)
+    void updateUserFromDto(UserDtoRequest dto, @MappingTarget User user);
 
     @Named("toCreateEntity")
     @Mapping(target = "id", ignore = true)
