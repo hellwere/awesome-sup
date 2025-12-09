@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // отключаем CSRF для REST
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/users").permitAll()
 //                        .requestMatchers("/error/**").permitAll()
                         .requestMatchers(
                                 "/swagger-ui/**",
@@ -34,6 +34,7 @@ public class SecurityConfig {
                                 "/webjars/**").permitAll()
                         .anyRequest().authenticated() // остальные требуют авторизацию
                 )
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 }

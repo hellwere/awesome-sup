@@ -9,23 +9,26 @@ import by.awesome.sup.service.authorization.mapper.UserMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserService {
+public class UserService implements UserDetailsService {
 
     UserRepository repository;
     UserMapper mapper;
+    PasswordEncoder encoder;
 
     public UserDtoResponse addUser(UserDtoRequest userDto) {
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
         User user = repository.save(mapper.toEntity(userDto));
         return mapper.toDto(user);
     }
@@ -61,5 +64,15 @@ public class UserService {
     public List<UserDtoResponse> findAll() {
         Iterable<User> users = repository.findAll();
         return StreamSupport.stream(users.spliterator(), false).map(mapper::toDto).toList();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = repository.findByLogin(username).orElseThrow();
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword()) // пароль уже закодирован
+//                .roles(user.getRoles())
+                .build();
     }
 }
