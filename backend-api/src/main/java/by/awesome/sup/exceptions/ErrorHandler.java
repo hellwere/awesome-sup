@@ -13,6 +13,7 @@ import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.Map;
 import java.util.Objects;
@@ -21,8 +22,8 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ErrorHandler {
 
-    @ExceptionHandler(RecordNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFindException(RecordNotFoundException exception) {
+    @ExceptionHandler({RecordNotFoundException.class, NoHandlerFoundException.class})
+    public ResponseEntity<ErrorResponse> handleNotFindException(Exception exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder()
                 .code(404).message(exception.getMessage()).build());
     }

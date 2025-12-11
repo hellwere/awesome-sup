@@ -27,6 +27,7 @@ public class User implements UserDetails {
     @GeneratedValue(generator = "userSq", strategy = GenerationType.SEQUENCE)
     Long id;
     String name;
+    @Column(nullable = false, unique = true)
     String login;
     String password;
     String email;

@@ -25,8 +25,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // отключаем CSRF для REST
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users").permitAll()
-//                        .requestMatchers("/error/**").permitAll()
+                        .requestMatchers("/users/**").permitAll()
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",

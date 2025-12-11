@@ -20,14 +20,17 @@ public class UserController {
     private final UserService service;
 
     @GetMapping
-    public List<UserDtoResponse> getUsers(@RequestParam(required = false) String login, @RequestParam(required = false) String name) {
-        if (!StringUtils.hasLength(login) && !StringUtils.hasLength(name)) {
-            return service.findAll();
-        } else if (StringUtils.hasLength(name)) {
+    public List<UserDtoResponse> getUsers(@RequestParam(required = false) String name, Integer page) {
+        if (StringUtils.hasLength(name)) {
             return service.findByName(name);
         } else {
-            return service.findByLogin(login);
+            return service.findAll(page);
         }
+    }
+
+    @GetMapping("/by-login/{login}")
+    public UserDtoResponse getUsers(@PathVariable String login) {
+        return service.findByLogin(login);
     }
 
     @GetMapping("/{id}")
