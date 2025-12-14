@@ -26,6 +26,7 @@ public class Project {
     @SequenceGenerator(name = "projectSq", sequenceName = "project_sq", schema = "sup", allocationSize = 1)
     @GeneratedValue(generator = "projectSq", strategy = GenerationType.SEQUENCE)
     Long id;
+    String name;
     @Enumerated(EnumType.STRING)
     Status status;
     @Enumerated(EnumType.STRING)

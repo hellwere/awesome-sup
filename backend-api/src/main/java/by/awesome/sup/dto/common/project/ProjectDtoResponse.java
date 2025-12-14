@@ -19,6 +19,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProjectDtoResponse {
     Long id;
+    String name;
     @NotNull
     Status status;
     List<Tag> tags = new ArrayList<>();

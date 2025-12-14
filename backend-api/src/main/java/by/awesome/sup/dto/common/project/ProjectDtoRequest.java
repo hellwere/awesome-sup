@@ -3,6 +3,7 @@ package by.awesome.sup.dto.common.project;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.project.Status;
 import by.awesome.sup.entity.common.task.Tag;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProjectDtoRequest {
     Long id;
+    String name;
     @NotNull
     Status status;
     List<Tag> tags = new ArrayList<>();

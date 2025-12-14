@@ -6,6 +6,7 @@ import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.service.attachment.mapper.FileMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring", uses = FileMapper.class)
@@ -14,6 +15,9 @@ public interface ProjectMapper {
     ProjectDtoResponse toDto(Project project);
     @Named("toEntity")
     Project toEntity(ProjectDtoRequest projectDto);
+    @Named("updateProjectFromDto")
+    @Mapping(target = "id", ignore = true)
+    void updateProjectFromDto(ProjectDtoRequest dto, @MappingTarget Project project);
 
     @Mapping(target = "id", ignore = true)
     @Named("toCreateEntity")

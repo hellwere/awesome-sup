@@ -4,6 +4,7 @@ import by.awesome.sup.dto.common.project.ProjectDtoRequest;
 import by.awesome.sup.dto.common.project.ProjectDtoResponse;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.entity.common.project.Status;
+import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.ProjectRepository;
 import by.awesome.sup.service.common.mapper.ProjectMapper;
 import lombok.AccessLevel;
@@ -33,10 +34,9 @@ public class ProjectService {
         return mapper.toDto(project);
     }
 
-    public ProjectDtoResponse updateStatus(Long id, Status status) {
-        Optional<Project> optional = repository.findById(id);
-        Project project = optional.orElseThrow();
-        project.setStatus(status);
+    public ProjectDtoResponse update(Long id, ProjectDtoRequest projectDtoRequest) {
+        Project project = repository.findById(id).orElseThrow(()-> new RecordNotFoundException("Project", "id", id.toString()));
+        mapper.updateProjectFromDto(projectDtoRequest, project);
         Project newProject = repository.save(project);
         return mapper.toDto(newProject);
     }

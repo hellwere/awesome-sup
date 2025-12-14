@@ -7,31 +7,41 @@ import by.awesome.sup.service.common.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/project")
+@RequestMapping("/projects")
 @RequiredArgsConstructor
 public class ProjectController {
 
     private final ProjectService service;
 
-    @GetMapping("/get/{id}")
-    public ProjectDtoResponse getProject(@PathVariable Long id) {
+    /*@GetMapping
+    public ProjectDtoResponse getProjects(@RequestParam(required = false) String name, Integer page) {
+        if (StringUtils.hasLength(name)) {
+            return service.findByName(name);
+        } else {
+            return service.findAll(page);
+        }
+    }*/
+
+    @GetMapping("/{id}")
+    public ProjectDtoResponse getProjectId(@PathVariable Long id) {
         return service.findById(id);
     }
 
-    @PostMapping("/add")
-    public ProjectDtoResponse addProject(@Valid @RequestBody ProjectDtoRequest projectDto) {
-        return service.addProject(projectDto);
+    @PostMapping
+    public ProjectDtoResponse addProject(@Valid @RequestBody ProjectDtoRequest projectDtoRequest) {
+        return service.addProject(projectDtoRequest);
     }
 
-    @PostMapping("/update/{id}")
-    public ProjectDtoResponse updateProjectData(@PathVariable Long id, @Param("status") Status status) {
-        return service.updateStatus(id, status);
+    @PutMapping("/{id}")
+    public ProjectDtoResponse update(@PathVariable Long id, @RequestBody ProjectDtoRequest projectDtoRequest) {
+        return service.update(id, projectDtoRequest);
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ProjectDtoResponse deleteProject(@PathVariable Long id) {
         return service.delete(id);
     }

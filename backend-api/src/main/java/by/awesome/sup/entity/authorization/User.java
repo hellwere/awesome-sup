@@ -30,6 +30,7 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     String login;
     String password;
+    @Column(nullable = false, unique = true)
     String email;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -57,6 +58,6 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.name;
+        return this.login;
     }
 }

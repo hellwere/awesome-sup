@@ -23,7 +23,7 @@ import java.util.stream.StreamSupport;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserService implements UserDetailsService {
+public class UserService {
 
     static int PAGE_SIZE = 15;
     UserRepository repository;
@@ -74,15 +74,5 @@ public class UserService implements UserDetailsService {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Iterable<User> users = repository.findAll(pageable);
         return StreamSupport.stream(users.spliterator(), false).map(mapper::toDto).toList();
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = repository.findByLogin(username).orElseThrow();
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword()) // пароль уже закодирован
-//                .roles(user.getRoles())
-                .build();
     }
 }
