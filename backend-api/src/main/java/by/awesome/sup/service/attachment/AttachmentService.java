@@ -2,8 +2,9 @@ package by.awesome.sup.service.attachment;
 
 import by.awesome.sup.dto.attachment.AttachmentDto;
 import by.awesome.sup.entity.attachment.Attachment;
-import by.awesome.sup.repository.attachment.AttachmentRepository;
+import by.awesome.sup.repository.AttachmentRepository;
 import by.awesome.sup.service.attachment.mapper.AttachmentMapper;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,7 +20,7 @@ public class AttachmentService {
     AttachmentRepository repository;
     AttachmentMapper mapper;
 
-    public AttachmentDto addAttachment(AttachmentDto attachmentDto) {
+    public AttachmentDto addAttachment(@Valid AttachmentDto attachmentDto) {
         Attachment attachment1 = mapper.toEntity(attachmentDto);
         Attachment attachment = repository.save(attachment1);
         return mapper.toDto(attachment);

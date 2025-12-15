@@ -1,6 +1,6 @@
 package by.awesome.sup.dto.authorization;
 
-import by.awesome.sup.entity.authorization.User;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +12,9 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PermissionDto {
     Long id;
+    @NotBlank
     String name;
+    @NotBlank
     String grants;
     List<UserDto> users = new ArrayList<>();
 }

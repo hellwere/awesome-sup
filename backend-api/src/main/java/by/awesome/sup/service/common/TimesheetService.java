@@ -2,7 +2,7 @@ package by.awesome.sup.service.common;
 
 import by.awesome.sup.dto.common.TimesheetDto;
 import by.awesome.sup.entity.common.Timesheet;
-import by.awesome.sup.repository.common.TimesheetRepository;
+import by.awesome.sup.repository.TimesheetRepository;
 import by.awesome.sup.service.common.mapper.TimesheetMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

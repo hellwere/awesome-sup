@@ -1,9 +1,7 @@
 package by.awesome.sup.service.attachment.mapper;
 
 import by.awesome.sup.dto.attachment.AttachmentDto;
-import by.awesome.sup.dto.attachment.FileDto;
 import by.awesome.sup.entity.attachment.Attachment;
-import by.awesome.sup.entity.attachment.File;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

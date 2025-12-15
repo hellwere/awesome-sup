@@ -3,7 +3,7 @@ package by.awesome.sup.service.common;
 import by.awesome.sup.dto.common.project.ProjectDto;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.entity.common.project.Status;
-import by.awesome.sup.repository.common.ProjectRepository;
+import by.awesome.sup.repository.ProjectRepository;
 import by.awesome.sup.service.common.mapper.ProjectMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
