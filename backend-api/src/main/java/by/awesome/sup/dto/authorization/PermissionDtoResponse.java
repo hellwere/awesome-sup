@@ -10,11 +10,11 @@ import java.util.List;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionDto {
+public class PermissionDtoResponse {
     Long id;
     @NotBlank
     String name;
     @NotBlank
     String grants;
-    List<UserDto> users = new ArrayList<>();
+    List<UserDtoRequest> users = new ArrayList<>();
 }

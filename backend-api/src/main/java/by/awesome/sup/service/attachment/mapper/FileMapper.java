@@ -1,12 +1,12 @@
 package by.awesome.sup.service.attachment.mapper;
 
-import by.awesome.sup.dto.attachment.FileDto;
+import by.awesome.sup.dto.attachment.FileDtoRequest;
 import by.awesome.sup.entity.attachment.File;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface FileMapper {
-    default File map(FileDto fileDto) {
+    default File map(FileDtoRequest fileDto) {
         if (fileDto == null) {
             return null;
         }
@@ -18,11 +18,11 @@ public interface FileMapper {
         return file;
     }
 
-    default FileDto map(File file) {
+    default FileDtoRequest map(File file) {
         if (file == null) {
             return null;
         }
-        FileDto fileDto = new FileDto();
+        FileDtoRequest fileDto = new FileDtoRequest();
         fileDto.setId(fileDto.getId());
         if (file.getData() != null) {
             fileDto.setData(new String(file.getData()));

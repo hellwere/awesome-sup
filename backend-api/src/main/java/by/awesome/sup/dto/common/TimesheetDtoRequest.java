@@ -6,14 +6,11 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TimesheetDto {
+public class TimesheetDtoRequest {
     Long id;
     @NotNull
     @Positive
     Double loggedTime;
-    LocalDateTime loggedAt;
 }

@@ -1,6 +1,7 @@
 package by.awesome.sup.service.attachment.mapper;
 
-import by.awesome.sup.dto.attachment.AttachmentDto;
+import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
+import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
 import by.awesome.sup.entity.attachment.Attachment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,9 +10,9 @@ import org.mapstruct.Mapping;
 public interface AttachmentMapper {
 
     @Mapping(source = "file", target = "file")
-    AttachmentDto toDto(Attachment attachment);
+    AttachmentDtoResponse toDto(Attachment attachment);
     @Mapping(source = "file", target = "file")
-    Attachment toEntity(AttachmentDto attachmentDto);
+    Attachment toEntity(AttachmentDtoRequest attachmentDto);
 
 
 }

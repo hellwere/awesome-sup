@@ -1,9 +1,14 @@
 package by.awesome.sup.repository;
 
 import by.awesome.sup.entity.authorization.User;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface UserRepository extends CrudRepository<User, Long> {
+import java.util.List;
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    List<User> findByName(String name);
+    Optional<User> findByLogin(String login);
+    boolean existsByLogin(String login);
+    boolean existsByEmail(String email);
 }

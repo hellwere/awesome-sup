@@ -1,20 +1,25 @@
 package by.awesome.sup.service.common.mapper;
 
-import by.awesome.sup.dto.common.project.ProjectDto;
+import by.awesome.sup.dto.common.project.ProjectDtoRequest;
+import by.awesome.sup.dto.common.project.ProjectDtoResponse;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.service.attachment.mapper.FileMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring", uses = FileMapper.class)
 public interface ProjectMapper {
     @Named("toDto")
-    ProjectDto toDto(Project project);
+    ProjectDtoResponse toDto(Project project);
     @Named("toEntity")
-    Project toEntity(ProjectDto projectDto);
+    Project toEntity(ProjectDtoRequest projectDto);
+    @Named("updateProjectFromDto")
+    @Mapping(target = "id", ignore = true)
+    void updateProjectFromDto(ProjectDtoRequest dto, @MappingTarget Project project);
 
     @Mapping(target = "id", ignore = true)
     @Named("toCreateEntity")
-    Project toCreateEntity(ProjectDto projectDto);
+    Project toCreateEntity(ProjectDtoRequest projectDto);
 }

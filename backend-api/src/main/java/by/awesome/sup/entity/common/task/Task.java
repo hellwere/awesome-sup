@@ -6,6 +6,7 @@ import by.awesome.sup.entity.common.Timesheet;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ public class Task {
     Status status;
     @Enumerated(EnumType.STRING)
     List<Tag> tags = new ArrayList<>();
-    @Column(name = "creation_at")
+    @CreationTimestamp
+    @Column(name = "creation_at", nullable = false, updatable = false)
     LocalDateTime creationAt;
     Integer estimate;
     @Enumerated(EnumType.STRING)

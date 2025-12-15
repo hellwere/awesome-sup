@@ -1,6 +1,7 @@
 package by.awesome.sup.service.common;
 
-import by.awesome.sup.dto.common.task.TaskDto;
+import by.awesome.sup.dto.common.task.TaskDtoRequest;
+import by.awesome.sup.dto.common.task.TaskDtoResponse;
 import by.awesome.sup.entity.common.task.Status;
 import by.awesome.sup.entity.common.task.Task;
 import by.awesome.sup.repository.TaskRepository;
@@ -10,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,26 +21,26 @@ public class TaskService {
     TaskRepository repository;
     TaskMapper mapper;
 
-    public TaskDto addTask(TaskDto taskDto) {
+    public TaskDtoResponse addTask(TaskDtoRequest taskDto) {
         Task task = repository.save(mapper.toCreateEntity(taskDto));
         return mapper.toDto(task);
     }
 
-    public TaskDto findById(Long id) {
-        Task task = repository.findById(id).orElseThrow();
+    public TaskDtoResponse findById(Long id) {
+        Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
         return mapper.toDto(task);
     }
 
-    public TaskDto updateStatus(Long id, Status status) {
-        Optional<Task> optional = repository.findById(id);
-        Task attachment = optional.orElseThrow();
-        attachment.setStatus(status);
-        Task newTask = repository.save(attachment);
+    public TaskDtoResponse updateStatus(Long id, Status status) {
+        Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
+        task.setStatus(status);
+        Task newTask = repository.save(task);
         return mapper.toDto(newTask);
     }
 
-    public TaskDto delete(TaskDto taskDto) {
-        repository.delete(mapper.toEntity(taskDto));
-        return taskDto;
+    public TaskDtoResponse delete(Long id) {
+        Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
+        repository.delete(task);
+        return mapper.toDto(task);
     }
 }

@@ -3,6 +3,7 @@ package by.awesome.sup.entity.common;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +22,7 @@ public class Timesheet {
     Long id;
     @Column(name = "logged_time")
     Double loggedTime;
-    @Column(name = "logged_at")
+    @CreationTimestamp
+    @Column(name = "logged_at", nullable = false, updatable = false)
     LocalDateTime loggedAt;
 }
