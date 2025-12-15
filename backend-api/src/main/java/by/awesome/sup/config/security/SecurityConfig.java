@@ -47,6 +47,10 @@ public class SecurityConfig {
                                 "/webjars/**").permitAll()
                         .anyRequest().authenticated() // остальные требуют авторизацию
                 )
+                .exceptionHandling(handler -> {
+                    handler.accessDeniedHandler(new AccessException())
+                            .authenticationEntryPoint(new ForbiddenException());
+                })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
                 .build();
