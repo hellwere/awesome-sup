@@ -18,7 +18,7 @@ public class RefreshTokenService {
 
     public void save(String login, String token, Instant expiry) {
         RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setUsername(login);
+        refreshToken.setLogin(login);
         refreshToken.setToken(token);
         refreshToken.setExpiryDate(expiry);
         repository.save(refreshToken);
@@ -32,7 +32,7 @@ public class RefreshTokenService {
         return token.getExpiryDate().isAfter(Instant.now());
     }
 
-    public void revokeTokens(String username) {
-        repository.deleteByUsername(username);
+    public void revokeTokens(String login) {
+        repository.deleteByLogin(login);
     }
 }

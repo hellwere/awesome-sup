@@ -56,14 +56,14 @@ public class AuthController {
         if (token.getExpiryDate().isBefore(Instant.now())) {
             throw new RuntimeException("Refresh token is expiry!");
         }
-        String newAccessToken = jwtService.generateToken(token.getUsername());
+        String newAccessToken = jwtService.generateToken(token.getLogin());
         return ResponseEntity.ok(new AuthResponse(newAccessToken, request.refreshToken()));
     }
 
     @PostMapping("/logoff")
     public ResponseEntity<Void> logout(@RequestBody LogoutRequest request) {
-        String username = jwtService.extractUsername(request.token());
-        refreshTokenService.revokeTokens(username);
+        String login = jwtService.extractUsername(request.token());
+        refreshTokenService.revokeTokens(login);
         return ResponseEntity.ok().build();
     }
 }

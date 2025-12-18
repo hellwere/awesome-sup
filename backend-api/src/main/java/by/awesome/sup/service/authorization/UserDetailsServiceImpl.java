@@ -15,8 +15,8 @@ public class UserDetailsServiceImpl  implements UserDetailsService {
     private final UserRepository repository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = repository.findByLogin(username).orElseThrow();
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        User user = repository.findByLogin(login).orElseThrow();
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword()) // пароль уже закодирован

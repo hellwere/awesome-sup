@@ -16,28 +16,28 @@ public class JwtService {
     @Value("${jwt.secret.key}")
     private String SECRET;
 
-    public String generateToken(String username) {
+    public String generateToken(String login) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(login)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
                 .signWith(Keys.hmacShaKeyFor(SECRET.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateRefreshToken(String username) {
+    public String generateRefreshToken(String login) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(login)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7)) // 7 дней
                 .signWith(Keys.hmacShaKeyFor(SECRET.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public boolean validateRefreshToken(String token, String username) {
+    public boolean validateRefreshToken(String token, String login) {
         try {
             String extracted = extractUsername(token);
-            return extracted.equals(username) && !isTokenExpired(token);
+            return extracted.equals(login) && !isTokenExpired(token);
         } catch (JwtException e) {
             return false;
         }
