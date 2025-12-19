@@ -20,6 +20,8 @@ public class Attachment {
     @SequenceGenerator(name = "attachmentSq", sequenceName = "attachment_sq", schema = "sup", allocationSize = 1)
     @GeneratedValue(generator = "attachmentSq", strategy = GenerationType.SEQUENCE)
     Long id;
+    String format;
+    Long length;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "file_id")
     File file;

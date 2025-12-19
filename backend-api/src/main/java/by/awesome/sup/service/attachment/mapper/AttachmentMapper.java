@@ -2,9 +2,13 @@ package by.awesome.sup.service.attachment.mapper;
 
 import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
 import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
+import by.awesome.sup.dto.authorization.UserDtoRequest;
 import by.awesome.sup.entity.attachment.Attachment;
+import by.awesome.sup.entity.authorization.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring", uses = FileMapper.class)
 public interface AttachmentMapper {
@@ -13,6 +17,7 @@ public interface AttachmentMapper {
     AttachmentDtoResponse toDto(Attachment attachment);
     @Mapping(source = "file", target = "file")
     Attachment toEntity(AttachmentDtoRequest attachmentDto);
-
+    @Named("merge")
+    void merge(AttachmentDtoRequest dto, @MappingTarget Attachment attachment);
 
 }

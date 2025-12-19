@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AttachmentDtoResponse {
     Long id;
+    String format;
+    Long length;
     @NotNull
     FileDtoRequest file;
     LocalDateTime updatedAt;

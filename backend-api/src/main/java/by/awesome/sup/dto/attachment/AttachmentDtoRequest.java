@@ -9,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AttachmentDtoRequest {
     Long id;
+    String format;
+    Long length;
     @NotNull
     FileDtoRequest file;
 }

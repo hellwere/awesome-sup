@@ -11,9 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +40,7 @@ public class UserService {
     }
 
     public UserDtoResponse findById(Long id) {
-        User user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", "id", id.toString()));
+        User user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", "id", id));
         return mapper.toDto(user);
     }
 
@@ -58,14 +55,14 @@ public class UserService {
     }
 
     public UserDtoResponse update(Long id, UserDtoRequest userDtoRequest) {
-        User user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", "id", id.toString()));
-        mapper.updateUserFromDto(userDtoRequest, user);
+        User user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", "id", id));
+        mapper.merge(userDtoRequest, user);
         User newUser = repository.save(user);
         return mapper.toDto(newUser);
     }
 
     public UserDtoResponse delete(Long id) {
-        User user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", "id", id.toString()));
+        User user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", "id", id));
         repository.delete(user);
         return mapper.toDto(user);
     }

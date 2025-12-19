@@ -18,6 +18,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskDtoResponse {
     Long id;
+    String name;
     @NotNull
     Status status;
     List<Tag> tags = new ArrayList<>();

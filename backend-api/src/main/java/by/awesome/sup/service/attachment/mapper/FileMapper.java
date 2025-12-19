@@ -13,7 +13,7 @@ public interface FileMapper {
         File file = new File();
         file.setId(fileDto.getId());
         if (fileDto.getData() != null) {
-            file.setData(fileDto.getData().getBytes());
+            file.setData(fileDto.getData());
         }
         return file;
     }
@@ -25,7 +25,7 @@ public interface FileMapper {
         FileDtoRequest fileDto = new FileDtoRequest();
         fileDto.setId(fileDto.getId());
         if (file.getData() != null) {
-            fileDto.setData(new String(file.getData()));
+            fileDto.setData(file.getData());
         }
         return fileDto;
     }

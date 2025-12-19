@@ -10,5 +10,5 @@ import lombok.experimental.FieldDefaults;
 public class FileDtoRequest {
     Long id;
     @NotBlank
-    String data;
+    byte[] data;
 }
