@@ -25,6 +25,7 @@ public class Task {
     @SequenceGenerator(name = "taskSq", sequenceName = "task_sq", schema = "sup", allocationSize = 1)
     @GeneratedValue(generator = "taskSq", strategy = GenerationType.SEQUENCE)
     Long id;
+    String name;
     @Enumerated(EnumType.STRING)
     Status status;
     @Enumerated(EnumType.STRING)

@@ -15,9 +15,9 @@ public interface ProjectMapper {
     ProjectDtoResponse toDto(Project project);
     @Named("toEntity")
     Project toEntity(ProjectDtoRequest projectDto);
-    @Named("updateProjectFromDto")
+    @Named("merge")
     @Mapping(target = "id", ignore = true)
-    void updateProjectFromDto(ProjectDtoRequest dto, @MappingTarget Project project);
+    void merge(ProjectDtoRequest dto, @MappingTarget Project project);
 
     @Mapping(target = "id", ignore = true)
     @Named("toCreateEntity")

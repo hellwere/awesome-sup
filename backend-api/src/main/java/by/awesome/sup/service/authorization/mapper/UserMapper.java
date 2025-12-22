@@ -15,9 +15,9 @@ public interface UserMapper {
     UserDtoResponse toDto(User user);
     @Named("toEntity")
     User toEntity(UserDtoRequest userDto);
-    @Named("updateUserFromDto")
+    @Named("merge")
     @Mapping(target = "login", ignore = true)
-    void updateUserFromDto(UserDtoRequest dto, @MappingTarget User user);
+    void merge(UserDtoRequest dto, @MappingTarget User user);
 
     @Named("toCreateEntity")
     @Mapping(target = "id", ignore = true)

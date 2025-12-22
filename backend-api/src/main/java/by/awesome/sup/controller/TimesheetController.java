@@ -5,33 +5,40 @@ import by.awesome.sup.dto.common.TimesheetDtoResponse;
 import by.awesome.sup.service.common.TimesheetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/timesheet")
+@RequestMapping("/timesheets")
 @RequiredArgsConstructor
 public class TimesheetController {
 
     private final TimesheetService service;
 
-    @GetMapping("/get/{id}")
-    public TimesheetDtoResponse getTimesheet(@PathVariable Long id) {
+    @GetMapping
+    public List<TimesheetDtoResponse> get(Integer page) {
+        return service.findAll(page);
+    }
+
+    @GetMapping("/{id}")
+    public TimesheetDtoResponse getById(@PathVariable Long id) {
         return service.findById(id);
     }
 
-    @PostMapping("/add")
-    public TimesheetDtoResponse addTimesheet(@Valid @RequestBody TimesheetDtoRequest timesheetDto) {
-        return service.addTimesheet(timesheetDto);
+    @PostMapping
+    public TimesheetDtoResponse add(@Valid @RequestBody TimesheetDtoRequest timesheetDto) {
+        return service.add(timesheetDto);
     }
 
-    @GetMapping("/update/{id}")
-    public TimesheetDtoResponse updateTimesheetData(@PathVariable Long id, @Param("timeCount") double timeCount) {
-        return service.updateTime(id, timeCount);
+    @PutMapping("/{id}")
+    public TimesheetDtoResponse update(@PathVariable Long id, @RequestBody TimesheetDtoRequest request) {
+        return service.update(id, request);
     }
 
-    @PostMapping("/delete/{id}")
-    public TimesheetDtoResponse deleteTimesheet(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public TimesheetDtoResponse delete(@PathVariable Long id) {
         return service.delete(id);
     }
 }
