@@ -1,6 +1,5 @@
 package by.awesome.sup.dto.attachment;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -9,6 +8,4 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FileDtoResponse {
     Long id;
-    @NotBlank
-    String data;
 }

@@ -14,6 +14,6 @@ public class AttachmentDtoResponse {
     String format;
     Long length;
     @NotNull
-    FileDtoRequest file;
+    FileDtoResponse file;
     LocalDateTime updatedAt;
 }

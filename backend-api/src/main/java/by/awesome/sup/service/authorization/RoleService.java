@@ -1,0 +1,65 @@
+package by.awesome.sup.service.authorization;
+
+import by.awesome.sup.dto.authorization.RoleDtoRequest;
+import by.awesome.sup.dto.authorization.RoleDtoResponse;
+import by.awesome.sup.entity.authorization.Role;
+import by.awesome.sup.exceptions.RecordNotFoundException;
+import by.awesome.sup.repository.RoleRepository;
+import by.awesome.sup.service.authorization.mapper.RoleMapper;
+import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.StreamSupport;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class RoleService {
+
+    static String ENTITY_TYPE = "Role";
+    static int PAGE_SIZE = 15;
+    RoleRepository repository;
+    RoleMapper mapper;
+
+    public RoleDtoResponse add(RoleDtoRequest roleDtoRequest) {
+        Role role = mapper.toCreateEntity(roleDtoRequest);
+        Role roleN = repository.save(role);
+        return mapper.toDto(roleN);
+    }
+
+    public List<RoleDtoResponse> findByName(String name) {
+        List<Role> role = repository.findByName(name);
+        return role.stream().map(mapper::toDto).toList();
+    }
+
+    public RoleDtoResponse findById(Long id) {
+        Role role = repository.findById(id).orElseThrow(() -> new RecordNotFoundException(ENTITY_TYPE, "id", id));
+        return mapper.toDto(role);
+    }
+
+    public RoleDtoResponse update(Long id, RoleDtoRequest roleDtoRequest) {
+        Role role = repository.findById(id).orElseThrow(() -> new RecordNotFoundException(ENTITY_TYPE, "id", id));
+        mapper.merge(roleDtoRequest, role);
+        Role newPermission = repository.save(role);
+        return mapper.toDto(newPermission);
+    }
+
+    public RoleDtoResponse delete(Long id) {
+        Role role = repository.findById(id).orElseThrow(() -> new RecordNotFoundException(ENTITY_TYPE, "id", id));
+        repository.delete(role);
+        return mapper.toDto(role);
+    }
+
+    public List<RoleDtoResponse> findAll(int page) {
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Iterable<Role> role = repository.findAll(pageable);
+        return StreamSupport.stream(role.spliterator(), false).map(mapper::toDto).toList();
+    }
+}

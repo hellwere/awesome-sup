@@ -24,7 +24,7 @@ public class AttachmentService {
     AttachmentMapper mapper;
 
     public AttachmentDtoResponse add(@Valid AttachmentDtoRequest attachmentDto) {
-        Attachment attachment = repository.save(mapper.toEntity(attachmentDto));
+        Attachment attachment = repository.save(mapper.toCreateEntity(attachmentDto));
         return mapper.toDto(attachment);
     }
 

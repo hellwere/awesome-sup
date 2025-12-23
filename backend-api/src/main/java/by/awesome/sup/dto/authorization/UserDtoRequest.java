@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDtoRequest {
+    Long id;
     @NotBlank
     String name;
     @NotBlank
@@ -19,5 +20,5 @@ public class UserDtoRequest {
     String password;
     @NotBlank
     String email;
-//    List<PermissionDtoRequest> permissions = new ArrayList<>();
+    List<RoleDtoRequest> roles = new ArrayList<>();
 }

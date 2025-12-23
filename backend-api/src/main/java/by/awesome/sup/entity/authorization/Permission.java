@@ -21,8 +21,6 @@ public class Permission {
     @GeneratedValue(generator = "permissionSq", strategy = GenerationType.SEQUENCE)
     Long id;
     String name;
-    String grants;
-
-    /*@ManyToMany(mappedBy = "permissions")
-    List<User> users = new ArrayList<>();*/
+    @Enumerated(EnumType.STRING)
+    Grants grants;
 }

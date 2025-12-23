@@ -1,17 +1,16 @@
 package by.awesome.sup.dto.authorization;
 
-import by.awesome.sup.entity.authorization.Grants;
-import jakarta.validation.constraints.NotBlank;
+import by.awesome.sup.entity.authorization.Permission;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionDtoRequest {
-    Long id;
-    @NotBlank
+public class RoleDtoResponse {
     String name;
-    @NotBlank
-    Grants grants;
+    List<Permission> permissions = new ArrayList<>();
 }

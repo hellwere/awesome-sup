@@ -2,9 +2,7 @@ package by.awesome.sup.service.attachment.mapper;
 
 import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
 import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
-import by.awesome.sup.dto.authorization.UserDtoRequest;
 import by.awesome.sup.entity.attachment.Attachment;
-import by.awesome.sup.entity.authorization.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -19,5 +17,9 @@ public interface AttachmentMapper {
     Attachment toEntity(AttachmentDtoRequest attachmentDto);
     @Named("merge")
     void merge(AttachmentDtoRequest dto, @MappingTarget Attachment attachment);
+
+    @Mapping(target = "id", ignore = true)
+    @Named("toCreateEntity")
+    Attachment toCreateEntity(AttachmentDtoRequest attachmentDtoRequest);
 
 }

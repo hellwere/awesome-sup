@@ -1,6 +1,6 @@
 package by.awesome.sup.dto.authorization;
 
-import by.awesome.sup.dto.common.project.ProjectDtoRequest;
+import by.awesome.sup.dto.common.project.ProjectDtoResponse;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -23,6 +23,6 @@ public class UserDtoResponse {
     @NotBlank
     String email;
     LocalDateTime creationAt;
-//    List<PermissionDtoRequest> permissions = new ArrayList<>();
-    List<ProjectDtoRequest> projects = new ArrayList<>();
+    List<RoleDtoResponse> roles = new ArrayList<>();
+    List<ProjectDtoResponse> projects = new ArrayList<>();
 }

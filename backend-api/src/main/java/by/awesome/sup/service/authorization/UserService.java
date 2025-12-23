@@ -6,6 +6,7 @@ import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.UserRepository;
 import by.awesome.sup.service.authorization.mapper.UserMapper;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -35,7 +37,7 @@ public class UserService {
             throw new RuntimeException("email must be unique!");
         }
         userDto.setPassword(encoder.encode(userDto.getPassword()));
-        User user = repository.save(mapper.toEntity(userDto));
+        User user = repository.save(mapper.toCreateEntity(userDto));
         return mapper.toDto(user);
     }
 

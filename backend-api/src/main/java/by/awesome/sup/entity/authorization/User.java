@@ -36,17 +36,17 @@ public class User implements UserDetails {
     @Column(name = "created_at", nullable = false, updatable = false)
     LocalDateTime creationAt;
 
-    /*@ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "user_permissions",
+            name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
+            inverseJoinColumns = @JoinColumn(name = "roles_id")
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    List<Permission> permissions = new ArrayList<>();*/
+    List<Role> roles = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Project> projects = new ArrayList<>();

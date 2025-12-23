@@ -33,7 +33,7 @@ public class ProjectController {
 
     @PostMapping
     public ProjectDtoResponse add(@Valid @RequestBody ProjectDtoRequest projectDtoRequest) {
-        return service.addProject(projectDtoRequest);
+        return service.add(projectDtoRequest);
     }
 
     @PutMapping("/{id}")

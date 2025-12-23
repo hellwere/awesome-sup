@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,13 +23,14 @@ import java.util.stream.StreamSupport;
 @Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@PreAuthorize("hasPermission(#projectId, 'Project', 'update')")
 public class ProjectService {
 
     static int PAGE_SIZE = 15;
     ProjectRepository repository;
     ProjectMapper mapper;
 
-    public ProjectDtoResponse addProject(ProjectDtoRequest projectDto) {
+    public ProjectDtoResponse add(ProjectDtoRequest projectDto) {
         Project createEntity = mapper.toCreateEntity(projectDto);
         Project project = repository.save(createEntity);
         return mapper.toDto(project);
@@ -40,7 +42,7 @@ public class ProjectService {
     }
 
     public ProjectDtoResponse findById(Long id) {
-        Project project = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Project with id=" + id + " not exists!"));
+        Project project = repository.findById(id).orElseThrow(()-> new RecordNotFoundException("Project", "id", id));
         return mapper.toDto(project);
     }
 
@@ -52,7 +54,7 @@ public class ProjectService {
     }
 
     public ProjectDtoResponse delete(Long id) {
-        Project project = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Project with id=" + id + " not exists!"));
+        Project project = repository.findById(id).orElseThrow(()-> new RecordNotFoundException("Project", "id", id));
         repository.delete(project);
         return mapper.toDto(project);
     }
