@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,35 +29,40 @@ public class TaskService {
     TaskRepository repository;
     TaskMapper mapper;
 
-    public TaskDtoResponse addTask(TaskDtoRequest taskDto) {
+    @PreAuthorize("hasAuthority('TASK_CREATE')")
+    public TaskDtoResponse add(TaskDtoRequest taskDto) {
         Task task = repository.save(mapper.toCreateEntity(taskDto));
         return mapper.toDto(task);
     }
 
+    @PreAuthorize("hasAuthority('TASK_READ')")
     public List<TaskDtoResponse> findByName(String name) {
         List<Task> project = repository.findByName(name);
         return project.stream().map(mapper::toDto).toList();
     }
 
+    @PreAuthorize("hasPermission('#id', 'TASK', 'READ')")
     public TaskDtoResponse findById(Long id) {
         Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
         return mapper.toDto(task);
     }
 
-    public TaskDtoResponse update(TaskUpdateDtoRequest taskDtoRequest) {
-        Long id = taskDtoRequest.getId();
+    @PreAuthorize("hasPermission('#id', 'TASK', 'UPDATE')")
+    public TaskDtoResponse update(Long id, TaskUpdateDtoRequest taskDtoRequest) {
         Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
         mapper.merge(taskDtoRequest, task);
         Task newTask = repository.save(task);
         return mapper.toDto(newTask);
     }
 
+    @PreAuthorize("hasPermission('#id', 'TASK', 'DELETE')")
     public TaskDtoResponse delete(Long id) {
         Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
         repository.delete(task);
         return mapper.toDto(task);
     }
 
+    @PreAuthorize("hasAuthority('TASK_CREATE')")
     public List<TaskDtoResponse> findAll(int page) {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Iterable<Task> projects = repository.findAll(pageable);

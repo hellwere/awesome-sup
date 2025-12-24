@@ -34,12 +34,12 @@ public class TaskController {
 
     @PostMapping
     public TaskDtoResponse add(@Valid @RequestBody TaskDtoRequest taskDto) {
-        return service.addTask(taskDto);
+        return service.add(taskDto);
     }
 
-    @PutMapping
-    public TaskDtoResponse update(@RequestBody TaskUpdateDtoRequest request) {
-        return service.update(request);
+    @PutMapping("/{id}")
+    public TaskDtoResponse update(Long id, @Valid @RequestBody TaskUpdateDtoRequest request) {
+        return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")

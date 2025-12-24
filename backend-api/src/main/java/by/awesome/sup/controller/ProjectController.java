@@ -37,9 +37,9 @@ public class ProjectController {
         return service.add(projectDtoRequest);
     }
 
-    @PutMapping
-    public ProjectDtoResponse update(@RequestBody ProjectUpdateDtoRequest request) {
-        return service.update(request);
+    @PutMapping("/{id}")
+    public ProjectDtoResponse update(@PathVariable Long id, @RequestBody ProjectUpdateDtoRequest request) {
+        return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")

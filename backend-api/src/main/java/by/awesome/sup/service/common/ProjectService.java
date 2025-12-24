@@ -22,7 +22,6 @@ import java.util.stream.StreamSupport;
 @Service
 @Transactional
 @RequiredArgsConstructor
-@PreAuthorize("hasPermission('PROJECT', 'READ')")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProjectService {
 
@@ -30,36 +29,41 @@ public class ProjectService {
     ProjectRepository repository;
     ProjectMapper mapper;
 
+    @PreAuthorize("hasAuthority('PROJECT_CREATE')")
     public ProjectDtoResponse add(ProjectDtoRequest projectDto) {
         Project createEntity = mapper.toCreateEntity(projectDto);
         Project project = repository.save(createEntity);
         return mapper.toDto(project);
     }
 
+    @PreAuthorize("hasAuthority('PROJECT_READ')")
     public List<ProjectDtoResponse> findByName(String name) {
         List<Project> project = repository.findByName(name);
         return project.stream().map(mapper::toDto).toList();
     }
 
+    @PreAuthorize("hasPermission('#id', 'PROJECT', 'READ')")
     public ProjectDtoResponse findById(Long id) {
-        Project project = repository.findById(id).orElseThrow(()-> new RecordNotFoundException("Project", "id", id));
+        Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         return mapper.toDto(project);
     }
 
-    public ProjectDtoResponse update(ProjectUpdateDtoRequest projectUpdateDtoRequest) {
-        Long id = projectUpdateDtoRequest.getId();
-        Project project = repository.findById(id).orElseThrow(()-> new RecordNotFoundException("Project", "id", id));
+    @PreAuthorize("hasPermission('#id', 'PROJECT', 'UPDATE')")
+    public ProjectDtoResponse update(Long id, ProjectUpdateDtoRequest projectUpdateDtoRequest) {
+        Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         mapper.merge(projectUpdateDtoRequest, project);
         Project newProject = repository.save(project);
         return mapper.toDto(newProject);
     }
 
+    @PreAuthorize("hasPermission('#id', 'PROJECT', 'DELETE')")
     public ProjectDtoResponse delete(Long id) {
-        Project project = repository.findById(id).orElseThrow(()-> new RecordNotFoundException("Project", "id", id));
+        Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         repository.delete(project);
         return mapper.toDto(project);
     }
 
+    @PreAuthorize("hasAuthority('PROJECT_CREATE')")
     public List<ProjectDtoResponse> findAll(int page) {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Iterable<Project> projects = repository.findAll(pageable);
