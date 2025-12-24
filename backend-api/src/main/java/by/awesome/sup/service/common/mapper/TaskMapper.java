@@ -2,6 +2,7 @@ package by.awesome.sup.service.common.mapper;
 
 import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoResponse;
+import by.awesome.sup.dto.common.task.TaskUpdateDtoRequest;
 import by.awesome.sup.entity.common.task.Task;
 import by.awesome.sup.service.attachment.mapper.FileMapper;
 import org.mapstruct.Mapper;
@@ -15,7 +16,7 @@ public interface TaskMapper {
     Task toEntity(TaskDtoRequest taskDto);
     @Named("merge")
     @Mapping(target = "id", ignore = true)
-    void merge(TaskDtoRequest dto, @MappingTarget Task task);
+    void merge(TaskUpdateDtoRequest dto, @MappingTarget Task task);
 
     @Mapping(target = "id", ignore = true)
     Task toCreateEntity(TaskDtoRequest taskDto);

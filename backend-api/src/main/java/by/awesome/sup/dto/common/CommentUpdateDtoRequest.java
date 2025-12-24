@@ -1,6 +1,5 @@
-package by.awesome.sup.dto.authorization;
+package by.awesome.sup.dto.common;
 
-import by.awesome.sup.entity.authorization.Grants;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -9,9 +8,9 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionDtoRequest {
-    @NotBlank
-    String name;
+public class CommentUpdateDtoRequest {
     @NotNull
-    Grants grants;
+    Long id;
+    @NotBlank
+    String data;
 }

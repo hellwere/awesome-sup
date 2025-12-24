@@ -2,6 +2,7 @@ package by.awesome.sup.controller;
 
 import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
 import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
+import by.awesome.sup.dto.attachment.AttachmentPayloadDtoResponse;
 import by.awesome.sup.dto.attachment.FileDtoRequest;
 import by.awesome.sup.service.attachment.AttachmentService;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ public class AttachmentController {
     private final AttachmentService service;
 
     @GetMapping("/{id}")
-    public AttachmentDtoResponse get(@PathVariable Long id) {
+    public AttachmentPayloadDtoResponse get(@PathVariable Long id) {
         return service.findById(id);
     }
 

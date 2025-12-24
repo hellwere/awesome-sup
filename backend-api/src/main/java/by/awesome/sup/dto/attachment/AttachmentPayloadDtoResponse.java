@@ -1,22 +1,19 @@
 package by.awesome.sup.dto.attachment;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AttachmentDtoRequest {
-    @NotNull
+public class AttachmentPayloadDtoResponse {
     Long id;
-    @NotBlank
     String format;
-    @NotNull
     Long length;
-    @Valid
     @NotNull
-    FileDtoRequest file;
+    FilePayloadDtoResponse file;
+    LocalDateTime updatedAt;
 }

@@ -2,6 +2,7 @@ package by.awesome.sup.service.common.mapper;
 
 import by.awesome.sup.dto.common.project.ProjectDtoRequest;
 import by.awesome.sup.dto.common.project.ProjectDtoResponse;
+import by.awesome.sup.dto.common.project.ProjectUpdateDtoRequest;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.service.attachment.mapper.FileMapper;
 import org.mapstruct.Mapper;
@@ -17,7 +18,7 @@ public interface ProjectMapper {
     Project toEntity(ProjectDtoRequest projectDto);
     @Named("merge")
     @Mapping(target = "id", ignore = true)
-    void merge(ProjectDtoRequest dto, @MappingTarget Project project);
+    void merge(ProjectUpdateDtoRequest dto, @MappingTarget Project project);
 
     @Mapping(target = "id", ignore = true)
     @Named("toCreateEntity")

@@ -2,11 +2,13 @@ package by.awesome.sup.service.authorization;
 
 import by.awesome.sup.dto.authorization.UserDtoRequest;
 import by.awesome.sup.dto.authorization.UserDtoResponse;
+import by.awesome.sup.dto.authorization.UserUpdateDtoRequest;
 import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.UserRepository;
 import by.awesome.sup.service.authorization.mapper.UserMapper;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -29,7 +31,7 @@ public class UserService {
     UserMapper mapper;
     PasswordEncoder encoder;
 
-    public UserDtoResponse addUser(UserDtoRequest userDto) {
+    public UserDtoResponse add(UserDtoRequest userDto) {
         if (repository.existsByLogin(userDto.getLogin())) {
             throw new RuntimeException("login must be unique!");
         }
@@ -56,9 +58,10 @@ public class UserService {
         return mapper.toDto(user);
     }
 
-    public UserDtoResponse update(Long id, UserDtoRequest userDtoRequest) {
+    public UserDtoResponse update(@Valid UserUpdateDtoRequest userUpdateDtoRequest) {
+        Long id = userUpdateDtoRequest.getId();
         User user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", "id", id));
-        mapper.merge(userDtoRequest, user);
+        mapper.merge(userUpdateDtoRequest, user);
         User newUser = repository.save(user);
         return mapper.toDto(newUser);
     }

@@ -2,6 +2,7 @@ package by.awesome.sup.service.attachment;
 
 import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
 import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
+import by.awesome.sup.dto.attachment.AttachmentPayloadDtoResponse;
 import by.awesome.sup.entity.attachment.Attachment;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.AttachmentRepository;
@@ -28,9 +29,9 @@ public class AttachmentService {
         return mapper.toDto(attachment);
     }
 
-    public AttachmentDtoResponse findById(Long id) {
+    public AttachmentPayloadDtoResponse findById(Long id) {
         Attachment attachment = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Attachment", "id", id));
-        return mapper.toDto(attachment);
+        return mapper.toPayloadDto(attachment);
     }
 
     public AttachmentDtoResponse update(Long id, AttachmentDtoRequest attachmentDto) {

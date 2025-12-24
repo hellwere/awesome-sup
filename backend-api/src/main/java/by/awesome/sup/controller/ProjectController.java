@@ -2,6 +2,7 @@ package by.awesome.sup.controller;
 
 import by.awesome.sup.dto.common.project.ProjectDtoRequest;
 import by.awesome.sup.dto.common.project.ProjectDtoResponse;
+import by.awesome.sup.dto.common.project.ProjectUpdateDtoRequest;
 import by.awesome.sup.service.common.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +37,9 @@ public class ProjectController {
         return service.add(projectDtoRequest);
     }
 
-    @PutMapping("/{id}")
-    public ProjectDtoResponse update(@PathVariable Long id, @RequestBody ProjectDtoRequest projectDtoRequest) {
-        return service.update(id, projectDtoRequest);
+    @PutMapping
+    public ProjectDtoResponse update(@RequestBody ProjectUpdateDtoRequest request) {
+        return service.update(request);
     }
 
     @DeleteMapping("/{id}")

@@ -1,19 +1,16 @@
 package by.awesome.sup.dto.authorization;
 
-import by.awesome.sup.entity.authorization.Permission;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
+@EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleDtoResponse {
+public class PermissionUpdateDtoRequest extends PermissionDtoRequest {
+    @NotNull
     Long id;
-    @NotBlank
-    String name;
-    List<Permission> permissions = new ArrayList<>();
 }

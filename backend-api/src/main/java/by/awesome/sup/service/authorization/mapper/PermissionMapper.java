@@ -11,6 +11,8 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface PermissionMapper {
     @Named("toEntity")
-    @Mapping(target = "id", source = "id")
     Permission toEntity(PermissionDtoRequest dto);
+    @Named("toCreateEntity")
+    @Mapping(target = "id", ignore = true)
+    Permission toCreateEntity(PermissionDtoRequest dto);
 }

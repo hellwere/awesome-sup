@@ -2,6 +2,7 @@ package by.awesome.sup.service.authorization.mapper;
 
 import by.awesome.sup.dto.authorization.UserDtoRequest;
 import by.awesome.sup.dto.authorization.UserDtoResponse;
+import by.awesome.sup.dto.authorization.UserUpdateDtoRequest;
 import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.service.attachment.mapper.FileMapper;
 import org.mapstruct.Mapper;
@@ -9,7 +10,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring", uses = FileMapper.class)
+@Mapper(componentModel = "spring")
 public interface UserMapper {
     @Named("toDto")
     UserDtoResponse toDto(User user);
@@ -17,7 +18,7 @@ public interface UserMapper {
     User toEntity(UserDtoRequest userDto);
     @Named("merge")
     @Mapping(target = "login", ignore = true)
-    void merge(UserDtoRequest dto, @MappingTarget User user);
+    void merge(UserUpdateDtoRequest dto, @MappingTarget User user);
 
     @Named("toCreateEntity")
     @Mapping(target = "id", ignore = true)

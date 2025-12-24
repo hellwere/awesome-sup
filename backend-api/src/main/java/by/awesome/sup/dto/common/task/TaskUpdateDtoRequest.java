@@ -16,7 +16,9 @@ import java.util.List;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TaskDtoRequest {
+public class TaskUpdateDtoRequest {
+    @NotNull
+    Long id;
     @NotBlank
     String name;
     @NotNull

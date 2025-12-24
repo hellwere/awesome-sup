@@ -2,6 +2,7 @@ package by.awesome.sup.service.common;
 
 import by.awesome.sup.dto.common.project.ProjectDtoRequest;
 import by.awesome.sup.dto.common.project.ProjectDtoResponse;
+import by.awesome.sup.dto.common.project.ProjectUpdateDtoRequest;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.ProjectRepository;
@@ -16,14 +17,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@PreAuthorize("hasPermission('PROJECT', 'READ')")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@PreAuthorize("hasPermission(#projectId, 'Project', 'update')")
 public class ProjectService {
 
     static int PAGE_SIZE = 15;
@@ -46,9 +46,10 @@ public class ProjectService {
         return mapper.toDto(project);
     }
 
-    public ProjectDtoResponse update(Long id, ProjectDtoRequest projectDtoRequest) {
+    public ProjectDtoResponse update(ProjectUpdateDtoRequest projectUpdateDtoRequest) {
+        Long id = projectUpdateDtoRequest.getId();
         Project project = repository.findById(id).orElseThrow(()-> new RecordNotFoundException("Project", "id", id));
-        mapper.merge(projectDtoRequest, project);
+        mapper.merge(projectUpdateDtoRequest, project);
         Project newProject = repository.save(project);
         return mapper.toDto(newProject);
     }

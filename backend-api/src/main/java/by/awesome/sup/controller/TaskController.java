@@ -2,6 +2,7 @@ package by.awesome.sup.controller;
 
 import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoResponse;
+import by.awesome.sup.dto.common.task.TaskUpdateDtoRequest;
 import by.awesome.sup.service.common.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +37,9 @@ public class TaskController {
         return service.addTask(taskDto);
     }
 
-    @PutMapping("/{id}")
-    public TaskDtoResponse update(@PathVariable Long id, @RequestBody TaskDtoRequest request) {
-        return service.update(id, request);
+    @PutMapping
+    public TaskDtoResponse update(@RequestBody TaskUpdateDtoRequest request) {
+        return service.update(request);
     }
 
     @DeleteMapping("/{id}")

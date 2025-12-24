@@ -2,6 +2,7 @@ package by.awesome.sup.service.authorization;
 
 import by.awesome.sup.dto.authorization.RoleDtoRequest;
 import by.awesome.sup.dto.authorization.RoleDtoResponse;
+import by.awesome.sup.dto.authorization.RoleUpdateDtoRequest;
 import by.awesome.sup.entity.authorization.Role;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.RoleRepository;
@@ -44,9 +45,10 @@ public class RoleService {
         return mapper.toDto(role);
     }
 
-    public RoleDtoResponse update(Long id, RoleDtoRequest roleDtoRequest) {
+    public RoleDtoResponse update(RoleUpdateDtoRequest roleUpdateDtoRequest) {
+        Long id = roleUpdateDtoRequest.getId();
         Role role = repository.findById(id).orElseThrow(() -> new RecordNotFoundException(ENTITY_TYPE, "id", id));
-        mapper.merge(roleDtoRequest, role);
+        mapper.merge(roleUpdateDtoRequest, role);
         Role newPermission = repository.save(role);
         return mapper.toDto(newPermission);
     }

@@ -2,6 +2,7 @@ package by.awesome.sup.controller;
 
 import by.awesome.sup.dto.authorization.RoleDtoRequest;
 import by.awesome.sup.dto.authorization.RoleDtoResponse;
+import by.awesome.sup.dto.authorization.RoleUpdateDtoRequest;
 import by.awesome.sup.service.authorization.RoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +37,9 @@ public class RoleController {
         return service.add(request);
     }
 
-    @PutMapping("/{id}")
-    public RoleDtoResponse update(@PathVariable Long id, @RequestBody RoleDtoRequest request) {
-        return service.update(id, request);
+    @PutMapping
+    public RoleDtoResponse update(@RequestBody RoleUpdateDtoRequest request) {
+        return service.update(request);
     }
 
     @DeleteMapping("/{id}")

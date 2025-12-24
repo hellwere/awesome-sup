@@ -2,6 +2,7 @@ package by.awesome.sup.service.common;
 
 import by.awesome.sup.dto.common.TimesheetDtoRequest;
 import by.awesome.sup.dto.common.TimesheetDtoResponse;
+import by.awesome.sup.dto.common.TimesheetUpdateDtoRequest;
 import by.awesome.sup.entity.common.Timesheet;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.TimesheetRepository;
@@ -36,7 +37,8 @@ public class TimesheetService {
         return mapper.toDto(task);
     }
 
-    public TimesheetDtoResponse update(Long id, TimesheetDtoRequest request) {
+    public TimesheetDtoResponse update(TimesheetUpdateDtoRequest request) {
+        Long id = request.getId();
         Timesheet timesheet = repository.findById(id).orElseThrow(()-> new RecordNotFoundException("Timesheet", "id", id));
         mapper.merge(request, timesheet);
         Timesheet newProject = repository.save(timesheet);

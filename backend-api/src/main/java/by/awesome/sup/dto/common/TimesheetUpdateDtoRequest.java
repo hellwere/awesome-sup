@@ -8,7 +8,9 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TimesheetDtoRequest {
+public class TimesheetUpdateDtoRequest {
+    @NotNull
+    Long id;
     @NotNull
     @Positive
     Double loggedTime;

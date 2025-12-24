@@ -2,6 +2,7 @@ package by.awesome.sup.service.common;
 
 import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoResponse;
+import by.awesome.sup.dto.common.task.TaskUpdateDtoRequest;
 import by.awesome.sup.entity.common.task.Task;
 import by.awesome.sup.repository.TaskRepository;
 import by.awesome.sup.service.common.mapper.TaskMapper;
@@ -42,7 +43,8 @@ public class TaskService {
         return mapper.toDto(task);
     }
 
-    public TaskDtoResponse update(Long id, TaskDtoRequest taskDtoRequest) {
+    public TaskDtoResponse update(TaskUpdateDtoRequest taskDtoRequest) {
+        Long id = taskDtoRequest.getId();
         Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
         mapper.merge(taskDtoRequest, task);
         Task newTask = repository.save(task);
