@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class UserService {
     UserMapper mapper;
     PasswordEncoder encoder;
 
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE')")
     public UserDtoResponse add(UserDtoRequest userDto) {
         if (repository.existsByLogin(userDto.getLogin())) {
             throw new RuntimeException("login must be unique!");
@@ -43,21 +45,25 @@ public class UserService {
         return mapper.toDto(user);
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_READ') or hasAuthority('PERMISSION_CREATE')")
     public UserDtoResponse findById(Long id) {
         User user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", "id", id));
         return mapper.toDto(user);
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_READ') or hasAuthority('PERMISSION_CREATE')")
     public List<UserDtoResponse> findByName(String name) {
         List<User> user = repository.findByName(name);
         return user.stream().map(mapper::toDto).toList();
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_READ') or hasAuthority('PERMISSION_CREATE')")
     public UserDtoResponse findByLogin(String login) {
         User user = repository.findByLogin(login).orElseThrow(() -> new RecordNotFoundException("User", "login", login));
         return mapper.toDto(user);
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_UPDATE') or hasAuthority('PERMISSION_CREATE')")
     public UserDtoResponse update(@Valid UserUpdateDtoRequest userUpdateDtoRequest) {
         Long id = userUpdateDtoRequest.getId();
         User user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", "id", id));
@@ -66,12 +72,14 @@ public class UserService {
         return mapper.toDto(newUser);
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_DELETE') or hasAuthority('PERMISSION_CREATE')")
     public UserDtoResponse delete(Long id) {
         User user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", "id", id));
         repository.delete(user);
         return mapper.toDto(user);
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE')")
     public List<UserDtoResponse> findAll(int page) {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Iterable<User> users = repository.findAll(pageable);

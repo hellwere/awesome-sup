@@ -27,7 +27,8 @@ public class ProjectDtoResponse {
     Integer estimate;
     @NotNull
     Priority priority;
+    String owner;
     List<TaskDtoResponse> tasks = new ArrayList<>();
     @Schema(description = "Список пользователей проекта", hidden = true)
-    List<UserDtoResponse> users = new ArrayList<>();
+    List<ProjectUserDtoResponse> users = new ArrayList<>();
 }

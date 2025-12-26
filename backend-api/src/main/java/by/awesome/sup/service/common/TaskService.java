@@ -1,5 +1,6 @@
 package by.awesome.sup.service.common;
 
+import by.awesome.sup.config.security.jwt.JwtService;
 import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoResponse;
 import by.awesome.sup.dto.common.task.TaskUpdateDtoRequest;
@@ -29,25 +30,27 @@ public class TaskService {
     TaskRepository repository;
     TaskMapper mapper;
 
-    @PreAuthorize("hasAuthority('TASK_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE')")
     public TaskDtoResponse add(TaskDtoRequest taskDto) {
-        Task task = repository.save(mapper.toCreateEntity(taskDto));
+        Task createEntity = mapper.toCreateEntity(taskDto);
+        createEntity.setOwner(JwtService.getAuthUserName());
+        Task task = repository.save(createEntity);
         return mapper.toDto(task);
     }
 
-    @PreAuthorize("hasAuthority('TASK_READ')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_READ')")
     public List<TaskDtoResponse> findByName(String name) {
         List<Task> project = repository.findByName(name);
         return project.stream().map(mapper::toDto).toList();
     }
 
-    @PreAuthorize("hasPermission('#id', 'TASK', 'READ')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission('#id', 'TASK', 'READ')")
     public TaskDtoResponse findById(Long id) {
         Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
         return mapper.toDto(task);
     }
 
-    @PreAuthorize("hasPermission('#id', 'TASK', 'UPDATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission('#id', 'TASK', 'UPDATE')")
     public TaskDtoResponse update(Long id, TaskUpdateDtoRequest taskDtoRequest) {
         Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
         mapper.merge(taskDtoRequest, task);
@@ -55,14 +58,14 @@ public class TaskService {
         return mapper.toDto(newTask);
     }
 
-    @PreAuthorize("hasPermission('#id', 'TASK', 'DELETE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission('#id', 'TASK', 'DELETE')")
     public TaskDtoResponse delete(Long id) {
         Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
         repository.delete(task);
         return mapper.toDto(task);
     }
 
-    @PreAuthorize("hasAuthority('TASK_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE')")
     public List<TaskDtoResponse> findAll(int page) {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Iterable<Task> projects = repository.findAll(pageable);

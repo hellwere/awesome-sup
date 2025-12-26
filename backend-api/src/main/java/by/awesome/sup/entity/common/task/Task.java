@@ -36,6 +36,8 @@ public class Task {
     Integer estimate;
     @Enumerated(EnumType.STRING)
     Priority priority;
+    @Column(nullable = false)
+    String owner;
 
     @OneToMany
     @JoinColumn(name = "attachment_id")

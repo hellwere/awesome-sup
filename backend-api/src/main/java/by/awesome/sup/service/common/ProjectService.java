@@ -1,5 +1,6 @@
 package by.awesome.sup.service.common;
 
+import by.awesome.sup.config.security.jwt.JwtService;
 import by.awesome.sup.dto.common.project.ProjectDtoRequest;
 import by.awesome.sup.dto.common.project.ProjectDtoResponse;
 import by.awesome.sup.dto.common.project.ProjectUpdateDtoRequest;
@@ -14,6 +15,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,26 +33,27 @@ public class ProjectService {
     ProjectRepository repository;
     ProjectMapper mapper;
 
-    @PreAuthorize("hasAuthority('PROJECT_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public ProjectDtoResponse add(ProjectDtoRequest projectDto) {
         Project createEntity = mapper.toCreateEntity(projectDto);
+        createEntity.setOwner(JwtService.getAuthUserName());
         Project project = repository.save(createEntity);
         return mapper.toDto(project);
     }
 
-    @PreAuthorize("hasAuthority('PROJECT_READ')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_READ')")
     public List<ProjectDtoResponse> findByName(String name) {
         List<Project> project = repository.findByName(name);
         return project.stream().map(mapper::toDto).toList();
     }
 
-    @PreAuthorize("hasPermission('#id', 'PROJECT', 'READ')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'PROJECT', 'READ')")
     public ProjectDtoResponse findById(Long id) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         return mapper.toDto(project);
     }
 
-    @PreAuthorize("hasPermission('#id', 'PROJECT', 'UPDATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'PROJECT', 'UPDATE')")
     public ProjectDtoResponse update(Long id, ProjectUpdateDtoRequest projectUpdateDtoRequest) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         mapper.merge(projectUpdateDtoRequest, project);
@@ -56,14 +61,14 @@ public class ProjectService {
         return mapper.toDto(newProject);
     }
 
-    @PreAuthorize("hasPermission('#id', 'PROJECT', 'DELETE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'PROJECT', 'DELETE')")
     public ProjectDtoResponse delete(Long id) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         repository.delete(project);
         return mapper.toDto(project);
     }
 
-    @PreAuthorize("hasAuthority('PROJECT_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public List<ProjectDtoResponse> findAll(int page) {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Iterable<Project> projects = repository.findAll(pageable);

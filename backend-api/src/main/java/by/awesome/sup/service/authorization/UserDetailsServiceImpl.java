@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
-                .password(user.getPassword()) // пароль уже закодирован
+                .password(user.getPassword())
                 .authorities(authorities)
                 .build();
     }

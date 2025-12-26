@@ -26,6 +26,7 @@ public class Project {
     @SequenceGenerator(name = "projectSq", sequenceName = "project_sq", schema = "sup", allocationSize = 1)
     @GeneratedValue(generator = "projectSq", strategy = GenerationType.SEQUENCE)
     Long id;
+    @Column(nullable = false)
     String name;
     @Enumerated(EnumType.STRING)
     Status status;
@@ -37,8 +38,10 @@ public class Project {
     int estimate;
     @Enumerated(EnumType.STRING)
     Priority priority;
+    @Column(nullable = false)
+    String owner;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

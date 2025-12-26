@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,22 +30,26 @@ public class RoleService {
     RoleRepository repository;
     RoleMapper mapper;
 
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE')")
     public RoleDtoResponse add(RoleDtoRequest roleDtoRequest) {
         Role role = mapper.toCreateEntity(roleDtoRequest);
         Role roleN = repository.save(role);
         return mapper.toDto(roleN);
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_READ') or hasAuthority('PERMISSION_CREATE')")
     public List<RoleDtoResponse> findByName(String name) {
         List<Role> role = repository.findByName(name);
         return role.stream().map(mapper::toDto).toList();
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_READ') or hasAuthority('PERMISSION_CREATE')")
     public RoleDtoResponse findById(Long id) {
         Role role = repository.findById(id).orElseThrow(() -> new RecordNotFoundException(ENTITY_TYPE, "id", id));
         return mapper.toDto(role);
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_UPDATE') or hasAuthority('PERMISSION_CREATE')")
     public RoleDtoResponse update(RoleUpdateDtoRequest roleUpdateDtoRequest) {
         Long id = roleUpdateDtoRequest.getId();
         Role role = repository.findById(id).orElseThrow(() -> new RecordNotFoundException(ENTITY_TYPE, "id", id));
@@ -53,12 +58,14 @@ public class RoleService {
         return mapper.toDto(newPermission);
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_DELETE') or hasAuthority('PERMISSION_CREATE')")
     public RoleDtoResponse delete(Long id) {
         Role role = repository.findById(id).orElseThrow(() -> new RecordNotFoundException(ENTITY_TYPE, "id", id));
         repository.delete(role);
         return mapper.toDto(role);
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_READ')")
     public List<RoleDtoResponse> findAll(int page) {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Iterable<Role> role = repository.findAll(pageable);

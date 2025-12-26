@@ -36,17 +36,16 @@ public class AuthController {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.login(), request.password())
             );
+            String token = jwtService.generateToken(request.login());
+            String refreshToken = jwtService.generateRefreshToken(request.login());
+            refreshTokenService.save(request.login(),
+                    refreshToken,
+                    Instant.now().plus(7, ChronoUnit.DAYS));
+
+            return ResponseEntity.ok(new AuthResponse(token, refreshToken));
         } catch (Exception ex) {
             throw new ErrorResponseException(HttpStatus.UNAUTHORIZED, ex);
         }
-
-        String token = jwtService.generateToken(request.login());
-        String refreshToken = jwtService.generateRefreshToken(request.login());
-        refreshTokenService.save(request.login(),
-                refreshToken,
-                Instant.now().plus(7, ChronoUnit.DAYS));
-
-        return ResponseEntity.ok(new AuthResponse(token, refreshToken));
     }
 
     @PostMapping("/refresh")

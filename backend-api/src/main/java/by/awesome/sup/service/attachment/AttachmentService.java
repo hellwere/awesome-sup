@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -24,16 +25,19 @@ public class AttachmentService {
     AttachmentRepository repository;
     AttachmentMapper mapper;
 
+    @PreAuthorize("hasAuthority('ATTACHMENT_CREATE') or hasAuthority('PERMISSION_CREATE')")
     public AttachmentDtoResponse add(@Valid AttachmentDtoRequest attachmentDto) {
         Attachment attachment = repository.save(mapper.toCreateEntity(attachmentDto));
         return mapper.toDto(attachment);
     }
 
+    @PreAuthorize("hasAuthority('ATTACHMENT_READ') or hasAuthority('PERMISSION_CREATE')")
     public AttachmentPayloadDtoResponse findById(Long id) {
         Attachment attachment = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Attachment", "id", id));
         return mapper.toPayloadDto(attachment);
     }
 
+    @PreAuthorize("hasAuthority('ATTACHMENT_UPDATE') or hasAuthority('PERMISSION_CREATE')")
     public AttachmentDtoResponse update(Long id, AttachmentDtoRequest attachmentDto) {
         Attachment attachment = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Attachment", "id", id));
         mapper.merge(attachmentDto, attachment);
@@ -41,6 +45,7 @@ public class AttachmentService {
         return mapper.toDto(newAttachment);
     }
 
+    @PreAuthorize("hasAuthority('ATTACHMENT_DELETE') or hasAuthority('PERMISSION_CREATE')")
     public AttachmentDtoResponse delete(Long id) {
         Attachment attachment = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Attachment", "id", id));
         repository.delete(attachment);
