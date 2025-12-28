@@ -3,6 +3,7 @@ package by.awesome.sup.dto.common.project;
 import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
 import by.awesome.sup.dto.authorization.UserDtoResponse;
 import by.awesome.sup.dto.common.CommentDtoResponse;
+import by.awesome.sup.dto.common.project.task.ProjectTaskDtoResponse;
 import by.awesome.sup.dto.common.task.TaskDtoResponse;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.project.Status;
@@ -30,7 +31,7 @@ public class ProjectDtoResponse {
     @NotNull
     Priority priority;
     String owner;
-    List<TaskDtoResponse> tasks = new ArrayList<>();
+    List<ProjectTaskDtoResponse> tasks = new ArrayList<>();
     List<AttachmentDtoResponse> attachments = new ArrayList<>();
     List<CommentDtoResponse> comments = new ArrayList<>();
     @Schema(description = "Список пользователей проекта", hidden = true)

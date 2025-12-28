@@ -1,5 +1,6 @@
 package by.awesome.sup.service.common;
 
+import by.awesome.sup.config.security.jwt.JwtService;
 import by.awesome.sup.dto.common.TimesheetDtoRequest;
 import by.awesome.sup.dto.common.TimesheetDtoResponse;
 import by.awesome.sup.dto.common.TimesheetUpdateDtoRequest;
@@ -35,6 +36,7 @@ public class TimesheetService {
     @PreAuthorize("hasAuthority('TIMESHEET_CREATE') or hasAuthority('PERMISSION_CREATE')")
     public TimesheetDtoResponse add(Project project, TimesheetDtoRequest taskDto) {
         Timesheet createEntity = mapper.toCreateEntity(taskDto);
+        createEntity.setOwner(JwtService.getAuthUserName());
         project.getTimesheets().add(createEntity);
         Timesheet timesheet = repository.save(createEntity);
         return mapper.toDto(timesheet);
@@ -43,6 +45,7 @@ public class TimesheetService {
     @PreAuthorize("hasAuthority('TIMESHEET_CREATE') or hasAuthority('PERMISSION_CREATE')")
     public TimesheetDtoResponse add(Task task, TimesheetDtoRequest taskDto) {
         Timesheet createEntity = mapper.toCreateEntity(taskDto);
+        createEntity.setOwner(JwtService.getAuthUserName());
         task.getTimesheets().add(createEntity);
         Timesheet timesheet = repository.save(createEntity);
         return mapper.toDto(timesheet);
@@ -68,6 +71,14 @@ public class TimesheetService {
         Timesheet timesheet = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Timesheet", "id", id));
         repository.delete(timesheet);
         return mapper.toDto(timesheet);
+    }
+
+    @PreAuthorize("hasAuthority('TIMESHEET_READ') or hasAuthority('PERMISSION_CREATE')")
+    public List<TimesheetDtoResponse> findByOwner(int page) {
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        String owner = JwtService.getAuthUserName();
+        Iterable<Timesheet> timesheets = repository.findByOwner(owner, pageable);
+        return StreamSupport.stream(timesheets.spliterator(), false).map(mapper::toDto).toList();
     }
 
     @PreAuthorize("hasAuthority('TIMESHEET_READ') or hasAuthority('PERMISSION_CREATE')")

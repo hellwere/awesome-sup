@@ -5,6 +5,8 @@ import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
 import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
 import by.awesome.sup.dto.common.CommentDtoRequest;
 import by.awesome.sup.dto.common.CommentDtoResponse;
+import by.awesome.sup.dto.common.TimesheetDtoRequest;
+import by.awesome.sup.dto.common.TimesheetDtoResponse;
 import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoResponse;
 import by.awesome.sup.dto.common.task.TaskUpdateDtoRequest;
@@ -89,8 +91,38 @@ public class TaskService {
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    public CommentDtoResponse updateComment(Long id, Long commentId, CommentDtoRequest commentDtoRequest) {
+        Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
+        task.getComments().stream().filter(comment -> comment.getId().equals(commentId))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Task not contains comment: " + commentId));
+        return commentService.update(commentId, commentDtoRequest);
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    public CommentDtoResponse deleteComment(Long id, Long commentId) {
+        Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
+        task.getComments().stream().filter(comment -> comment.getId().equals(commentId))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Task not contains comment: " + commentId));
+        return commentService.delete(commentId);
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public AttachmentDtoResponse addAttachment(Long id, AttachmentDtoRequest attachmentDtoRequest) {
         Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
         return attachmentService.add(task, attachmentDtoRequest);
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    public AttachmentDtoResponse deleteAttachment(Long id, Long attachmentId) {
+        Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
+        task.getAttachments().stream().filter(comment -> comment.getId().equals(attachmentId))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Task not contains attachment: " + attachmentId));
+        return attachmentService.delete(attachmentId);
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    public TimesheetDtoResponse addTimesheet(Long id, TimesheetDtoRequest timesheetDtoRequest) {
+        Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
+        return timesheetService.add(task, timesheetDtoRequest);
     }
 }

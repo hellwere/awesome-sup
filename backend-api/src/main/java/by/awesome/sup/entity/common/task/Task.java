@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,9 +32,12 @@ public class Task {
     Status status;
     @Enumerated(EnumType.STRING)
     List<Tag> tags = new ArrayList<>();
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    LocalDateTime updatedAt;
     @CreationTimestamp
-    @Column(name = "creation_at", nullable = false, updatable = false)
-    LocalDateTime creationAt;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    LocalDateTime createdAt;
     Integer estimate;
     @Enumerated(EnumType.STRING)
     Priority priority;

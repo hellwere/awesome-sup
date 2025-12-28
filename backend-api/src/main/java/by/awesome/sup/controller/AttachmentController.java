@@ -1,15 +1,12 @@
 package by.awesome.sup.controller;
 
-import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
-import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
 import by.awesome.sup.dto.attachment.AttachmentPayloadDtoResponse;
-import by.awesome.sup.dto.attachment.FileDtoRequest;
 import by.awesome.sup.service.attachment.AttachmentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,10 +18,5 @@ public class AttachmentController {
     @GetMapping("/{id}")
     public AttachmentPayloadDtoResponse get(@PathVariable Long id) {
         return service.findById(id);
-    }
-
-    @DeleteMapping("/{id}")
-    public AttachmentDtoResponse delete(@PathVariable Long id) {
-        return service.delete(id);
     }
 }

@@ -17,7 +17,6 @@ import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.ProjectRepository;
 import by.awesome.sup.service.attachment.AttachmentService;
 import by.awesome.sup.service.common.mapper.ProjectMapper;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -99,9 +99,33 @@ public class ProjectService {
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    public CommentDtoResponse updateComment(Long id, Long commentId, CommentDtoRequest commentDtoRequest) {
+        Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
+        project.getComments().stream().filter(comment -> comment.getId().equals(commentId))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Project not contains comment: " + commentId));
+        return commentService.update(commentId, commentDtoRequest);
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    public CommentDtoResponse deleteComment(Long id, Long commentId) {
+        Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
+        project.getComments().stream().filter(comment -> comment.getId().equals(commentId))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Project not contains comment: " + commentId));
+        return commentService.delete(commentId);
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public AttachmentDtoResponse addAttachment(Long id, AttachmentDtoRequest attachmentDtoRequest) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         return attachmentService.add(project, attachmentDtoRequest);
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    public AttachmentDtoResponse deleteAttachment(Long id, Long attachmentId) {
+        Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
+        project.getAttachments().stream().filter(comment -> comment.getId().equals(attachmentId))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Project not contains attachment: " + attachmentId));
+        return attachmentService.delete(attachmentId);
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")

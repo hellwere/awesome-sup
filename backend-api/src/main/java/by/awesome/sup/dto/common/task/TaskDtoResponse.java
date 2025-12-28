@@ -20,12 +20,10 @@ import java.util.List;
 public class TaskDtoResponse {
     Long id;
     String name;
-    @NotNull
     Status status;
     List<Tag> tags = new ArrayList<>();
     LocalDateTime creationAt;
     Integer estimate;
-    @NotNull
     Priority priority;
     List<AttachmentDtoResponse> attachments = new ArrayList<>();
     List<CommentDtoResponse> comments = new ArrayList<>();
