@@ -10,4 +10,5 @@ import lombok.experimental.FieldDefaults;
 public class ProjectUserDtoRequest {
     @NotNull
     Long id;
+    String name;
 }

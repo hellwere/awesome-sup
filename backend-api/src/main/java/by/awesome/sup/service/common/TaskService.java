@@ -1,13 +1,18 @@
 package by.awesome.sup.service.common;
 
 import by.awesome.sup.config.security.jwt.JwtService;
+import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
+import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
+import by.awesome.sup.dto.common.CommentDtoRequest;
+import by.awesome.sup.dto.common.CommentDtoResponse;
 import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoResponse;
 import by.awesome.sup.dto.common.task.TaskUpdateDtoRequest;
 import by.awesome.sup.entity.common.task.Task;
+import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.TaskRepository;
+import by.awesome.sup.service.attachment.AttachmentService;
 import by.awesome.sup.service.common.mapper.TaskMapper;
-import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,6 +35,8 @@ public class TaskService {
     static int PAGE_SIZE = 15;
     TaskRepository repository;
     TaskMapper mapper;
+    CommentService commentService;
+    AttachmentService attachmentService;
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE')")
     public TaskDtoResponse add(TaskDtoRequest taskDto) {
@@ -70,5 +78,17 @@ public class TaskService {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Iterable<Task> projects = repository.findAll(pageable);
         return StreamSupport.stream(projects.spliterator(), false).map(mapper::toDto).toList();
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    public CommentDtoResponse addComment(Long id, CommentDtoRequest commentDtoRequest) {
+        Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
+        return commentService.addComment(task, commentDtoRequest);
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    public AttachmentDtoResponse addAttachment(Long id, AttachmentDtoRequest attachmentDtoRequest) {
+        Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
+        return attachmentService.addAttachment(task, attachmentDtoRequest);
     }
 }

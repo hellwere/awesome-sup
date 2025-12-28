@@ -1,9 +1,7 @@
 package by.awesome.sup.dto.common.task;
 
-import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
 import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
 import by.awesome.sup.dto.common.CommentDtoResponse;
-import by.awesome.sup.dto.common.TimesheetDtoRequest;
 import by.awesome.sup.dto.common.TimesheetDtoResponse;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.task.Status;
@@ -29,7 +27,7 @@ public class TaskDtoResponse {
     Integer estimate;
     @NotNull
     Priority priority;
-    List<AttachmentDtoResponse> attachment;
+    List<AttachmentDtoResponse> attachments = new ArrayList<>();
     List<CommentDtoResponse> comments = new ArrayList<>();
     List<TimesheetDtoResponse> timesheets = new ArrayList<>();
 }

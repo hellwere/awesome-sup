@@ -7,7 +7,7 @@ import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.UserRepository;
 import by.awesome.sup.service.authorization.mapper.UserMapper;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

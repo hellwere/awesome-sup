@@ -23,18 +23,6 @@ public class AttachmentController {
         return service.findById(id);
     }
 
-    @PostMapping
-    public AttachmentDtoResponse add(@RequestParam String entityType, @RequestParam Long id, MultipartFile file) throws IOException {
-        FileDtoRequest fileDtoRequest = new FileDtoRequest();
-        fileDtoRequest.setData(file.getBytes());
-
-        AttachmentDtoRequest attachmentDto = new AttachmentDtoRequest();
-        attachmentDto.setFormat(file.getContentType());
-        attachmentDto.setLength(file.getSize());
-        attachmentDto.setFile(fileDtoRequest);
-        return service.add(entityType, id, attachmentDto);
-    }
-
     @DeleteMapping("/{id}")
     public AttachmentDtoResponse delete(@PathVariable Long id) {
         return service.delete(id);

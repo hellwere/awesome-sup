@@ -20,6 +20,6 @@ public class File {
     @SequenceGenerator(name = "fileSq", sequenceName = "file_sq", schema = "sup", allocationSize = 1)
     @GeneratedValue(generator = "fileSq", strategy = GenerationType.SEQUENCE)
     Long id;
-    @Lob
+    @Column(columnDefinition = "BYTEA")
     byte[] data;
 }

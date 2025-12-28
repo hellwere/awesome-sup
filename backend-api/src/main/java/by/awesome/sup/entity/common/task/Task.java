@@ -41,13 +41,13 @@ public class Task {
     String owner;
 
     @OneToMany
-    @JoinColumn(name = "attachment_id")
+    @JoinColumn(name = "task_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    List<Attachment> attachment;
+    List<Attachment> attachments;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "comment_id")
+    @JoinColumn(name = "task_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Comment> comments = new ArrayList<>();

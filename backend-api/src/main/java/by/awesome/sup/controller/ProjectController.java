@@ -1,5 +1,8 @@
 package by.awesome.sup.controller;
 
+import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
+import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
+import by.awesome.sup.dto.attachment.FileDtoRequest;
 import by.awesome.sup.dto.common.CommentDtoRequest;
 import by.awesome.sup.dto.common.CommentDtoResponse;
 import by.awesome.sup.dto.common.project.ProjectDtoRequest;
@@ -10,7 +13,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -49,23 +54,20 @@ public class ProjectController {
         return service.delete(id);
     }
 
-    @GetMapping("/{id}/comments")
-    public CommentDtoResponse getComments(@PathVariable Long id, @RequestParam Long commentId) {
-        return service.findCommentById(id, commentId);
-    }
-
     @PostMapping("/{id}/comments")
     public CommentDtoResponse addComment(@PathVariable Long id, @Valid @RequestBody CommentDtoRequest commentDtoRequest) {
         return service.addComment(id, commentDtoRequest);
     }
 
-    @PutMapping("/{id}/comments")
-    public CommentDtoResponse updateComment(@PathVariable Long id, @RequestParam Long commentId, @Valid @RequestBody CommentDtoRequest commentDtoRequest) {
-        return service.updateComment(id, commentId, commentDtoRequest);
-    }
+    @PostMapping("/{id}/attachment")
+    public AttachmentDtoResponse addAttachment(@PathVariable Long id, MultipartFile file) throws IOException {
+        FileDtoRequest fileDtoRequest = new FileDtoRequest();
+        fileDtoRequest.setData(file.getBytes());
 
-    @DeleteMapping("/{id}/comments")
-    public CommentDtoResponse deleteComment(@PathVariable Long id, @RequestParam Long commentId) {
-        return service.deleteComment(commentId);
+        AttachmentDtoRequest attachmentDto = new AttachmentDtoRequest();
+        attachmentDto.setFormat(file.getContentType());
+        attachmentDto.setLength(file.getSize());
+        attachmentDto.setFile(fileDtoRequest);
+        return service.addAttachment(id, attachmentDto);
     }
 }

@@ -50,20 +50,20 @@ public class Project {
     List<Task> tasks = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "attachment_id")
+    @JoinColumn(name = "project_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Attachment> attachments = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "comment_id")
+    @JoinColumn(name = "project_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Comment> comments = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "project_members",
+            name = "project_members", schema = "sup",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )

@@ -7,8 +7,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comments")
@@ -16,19 +14,24 @@ public class CommentController {
 
     private final CommentService service;
 
-    @GetMapping("/{id}")
+    /*@GetMapping
+    public CommentDtoResponse get(@RequestParam Long projectId) {
+        return service.findAll(projectId);
+    }*/
+
+    /*@GetMapping("/{id}")
     public CommentDtoResponse get(@PathVariable Long id) {
         return service.findById(id);
-    }
+    }*/
 
-    @PostMapping
-    public CommentDtoResponse add(@RequestParam String entityType, @RequestParam Long id,
-                                  @Valid @RequestBody CommentDtoRequest commentDtoRequest) throws IOException {
-        return service.add(entityType, id, commentDtoRequest);
+    @PutMapping("/{id}")
+    public CommentDtoResponse update(@PathVariable Long id, @Valid @RequestBody CommentDtoRequest commentDtoRequest) {
+        return service.update(id, commentDtoRequest);
     }
 
     @DeleteMapping("/{id}")
     public CommentDtoResponse delete(@PathVariable Long id) {
         return service.delete(id);
     }
+
 }

@@ -7,7 +7,7 @@ import by.awesome.sup.entity.authorization.Role;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.RoleRepository;
 import by.awesome.sup.service.authorization.mapper.RoleMapper;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

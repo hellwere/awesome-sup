@@ -35,7 +35,7 @@ public class Attachment {
     LocalDateTime updatedAt;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    LocalDateTime createddAt;
+    LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
