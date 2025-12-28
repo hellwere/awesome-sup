@@ -5,9 +5,13 @@ import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
 import by.awesome.sup.dto.attachment.FileDtoRequest;
 import by.awesome.sup.dto.common.CommentDtoRequest;
 import by.awesome.sup.dto.common.CommentDtoResponse;
+import by.awesome.sup.dto.common.TimesheetDtoRequest;
+import by.awesome.sup.dto.common.TimesheetDtoResponse;
 import by.awesome.sup.dto.common.project.ProjectDtoRequest;
 import by.awesome.sup.dto.common.project.ProjectDtoResponse;
 import by.awesome.sup.dto.common.project.ProjectUpdateDtoRequest;
+import by.awesome.sup.dto.common.task.TaskDtoRequest;
+import by.awesome.sup.dto.common.task.TaskDtoResponse;
 import by.awesome.sup.service.common.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +58,12 @@ public class ProjectController {
         return service.delete(id);
     }
 
-    @PostMapping("/{id}/comments")
+    @PostMapping("/{id}/task")
+    public TaskDtoResponse addTask(@PathVariable Long id, @Valid @RequestBody TaskDtoRequest taskDtoRequest) {
+        return service.addTask(id, taskDtoRequest);
+    }
+
+    @PostMapping("/{id}/comment")
     public CommentDtoResponse addComment(@PathVariable Long id, @Valid @RequestBody CommentDtoRequest commentDtoRequest) {
         return service.addComment(id, commentDtoRequest);
     }
@@ -69,5 +78,10 @@ public class ProjectController {
         attachmentDto.setLength(file.getSize());
         attachmentDto.setFile(fileDtoRequest);
         return service.addAttachment(id, attachmentDto);
+    }
+
+    @PostMapping("/{id}/timesheet")
+    public TimesheetDtoResponse addTimesheet(@PathVariable Long id, @Valid @RequestBody TimesheetDtoRequest timesheetDtoRequest) {
+        return service.addTimesheet(id, timesheetDtoRequest);
     }
 }

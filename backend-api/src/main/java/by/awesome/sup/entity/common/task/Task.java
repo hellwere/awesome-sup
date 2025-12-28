@@ -53,7 +53,7 @@ public class Task {
     List<Comment> comments = new ArrayList<>();
 
     @OneToMany
-    @JoinColumn(name = "timesheet_id")
+    @JoinColumn(name = "task_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Timesheet> timesheets = new ArrayList<>();

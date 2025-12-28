@@ -27,11 +27,6 @@ public class TimesheetController {
         return service.findById(id);
     }
 
-    @PostMapping
-    public TimesheetDtoResponse add(@Valid @RequestBody TimesheetDtoRequest timesheetDto) {
-        return service.add(timesheetDto);
-    }
-
     @PutMapping
     public TimesheetDtoResponse update(@RequestBody TimesheetUpdateDtoRequest request) {
         return service.update(request);

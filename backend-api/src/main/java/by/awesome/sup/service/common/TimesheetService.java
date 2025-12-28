@@ -4,6 +4,8 @@ import by.awesome.sup.dto.common.TimesheetDtoRequest;
 import by.awesome.sup.dto.common.TimesheetDtoResponse;
 import by.awesome.sup.dto.common.TimesheetUpdateDtoRequest;
 import by.awesome.sup.entity.common.Timesheet;
+import by.awesome.sup.entity.common.project.Project;
+import by.awesome.sup.entity.common.task.Task;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.TimesheetRepository;
 import by.awesome.sup.service.common.mapper.TimesheetMapper;
@@ -31,9 +33,19 @@ public class TimesheetService {
     TimesheetMapper mapper;
 
     @PreAuthorize("hasAuthority('TIMESHEET_CREATE') or hasAuthority('PERMISSION_CREATE')")
-    public TimesheetDtoResponse add(TimesheetDtoRequest taskDto) {
-        Timesheet task = repository.save(mapper.toCreateEntity(taskDto));
-        return mapper.toDto(task);
+    public TimesheetDtoResponse add(Project project, TimesheetDtoRequest taskDto) {
+        Timesheet createEntity = mapper.toCreateEntity(taskDto);
+        project.getTimesheets().add(createEntity);
+        Timesheet timesheet = repository.save(createEntity);
+        return mapper.toDto(timesheet);
+    }
+
+    @PreAuthorize("hasAuthority('TIMESHEET_CREATE') or hasAuthority('PERMISSION_CREATE')")
+    public TimesheetDtoResponse add(Task task, TimesheetDtoRequest taskDto) {
+        Timesheet createEntity = mapper.toCreateEntity(taskDto);
+        task.getTimesheets().add(createEntity);
+        Timesheet timesheet = repository.save(createEntity);
+        return mapper.toDto(timesheet);
     }
 
     @PreAuthorize("hasAuthority('TIMESHEET_READ') or hasAuthority('PERMISSION_CREATE')")

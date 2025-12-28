@@ -41,7 +41,7 @@ public class AttachmentService {
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
-    public AttachmentDtoResponse addAttachment(Project project, AttachmentDtoRequest attachmentDtoRequest) {
+    public AttachmentDtoResponse add(Project project, AttachmentDtoRequest attachmentDtoRequest) {
         Attachment attachment = mapper.toEntity(attachmentDtoRequest);
         attachment.setOwner(JwtService.getAuthUserName());
         attachment.setProject(project);
@@ -51,7 +51,7 @@ public class AttachmentService {
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
-    public AttachmentDtoResponse addAttachment(Task task, AttachmentDtoRequest attachmentDtoRequest) {
+    public AttachmentDtoResponse add(Task task, AttachmentDtoRequest attachmentDtoRequest) {
         Attachment attachment = mapper.toEntity(attachmentDtoRequest);
         attachment.setOwner(JwtService.getAuthUserName());
         attachment.setTask(task);

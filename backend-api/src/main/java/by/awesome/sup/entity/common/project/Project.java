@@ -4,6 +4,7 @@ import by.awesome.sup.entity.attachment.Attachment;
 import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.entity.common.Comment;
 import by.awesome.sup.entity.common.Priority;
+import by.awesome.sup.entity.common.Timesheet;
 import by.awesome.sup.entity.common.task.Tag;
 import by.awesome.sup.entity.common.task.Task;
 import jakarta.persistence.*;
@@ -60,6 +61,12 @@ public class Project {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Comment> comments = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "project_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    List<Timesheet> timesheets = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

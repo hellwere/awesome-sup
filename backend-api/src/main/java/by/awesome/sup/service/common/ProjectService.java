@@ -5,9 +5,13 @@ import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
 import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
 import by.awesome.sup.dto.common.CommentDtoRequest;
 import by.awesome.sup.dto.common.CommentDtoResponse;
+import by.awesome.sup.dto.common.TimesheetDtoRequest;
+import by.awesome.sup.dto.common.TimesheetDtoResponse;
 import by.awesome.sup.dto.common.project.ProjectDtoRequest;
 import by.awesome.sup.dto.common.project.ProjectDtoResponse;
 import by.awesome.sup.dto.common.project.ProjectUpdateDtoRequest;
+import by.awesome.sup.dto.common.task.TaskDtoRequest;
+import by.awesome.sup.dto.common.task.TaskDtoResponse;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.ProjectRepository;
@@ -34,8 +38,10 @@ public class ProjectService {
     static int PAGE_SIZE = 15;
     ProjectRepository repository;
     ProjectMapper mapper;
+    TaskService taskService;
     CommentService commentService;
     AttachmentService attachmentService;
+    TimesheetService timesheetService;
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public ProjectDtoResponse add(ProjectDtoRequest projectDto) {
@@ -81,14 +87,26 @@ public class ProjectService {
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    public TaskDtoResponse addTask(Long id, TaskDtoRequest taskDtoRequest) {
+        Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
+        return taskService.add(project, taskDtoRequest);
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public CommentDtoResponse addComment(Long id, CommentDtoRequest commentDtoRequest) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
-        return commentService.addComment(project, commentDtoRequest);
+        return commentService.add(project, commentDtoRequest);
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public AttachmentDtoResponse addAttachment(Long id, AttachmentDtoRequest attachmentDtoRequest) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
-        return attachmentService.addAttachment(project, attachmentDtoRequest);
+        return attachmentService.add(project, attachmentDtoRequest);
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    public TimesheetDtoResponse addTimesheet(Long id, TimesheetDtoRequest timesheetDtoRequest) {
+        Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
+        return timesheetService.add(project, timesheetDtoRequest);
     }
 }

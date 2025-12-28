@@ -70,7 +70,7 @@ public class CommentService {
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
-    public CommentDtoResponse addComment(Project project, CommentDtoRequest commentDtoRequest) {
+    public CommentDtoResponse add(Project project, CommentDtoRequest commentDtoRequest) {
         Comment comment = mapper.toEntity(commentDtoRequest);
         comment.setOwner(JwtService.getAuthUserName());
         comment.setProject(project);
@@ -80,7 +80,7 @@ public class CommentService {
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
-    public CommentDtoResponse addComment(Task task, CommentDtoRequest commentDtoRequest) {
+    public CommentDtoResponse add(Task task, CommentDtoRequest commentDtoRequest) {
         Comment comment = mapper.toEntity(commentDtoRequest);
         comment.setOwner(JwtService.getAuthUserName());
         comment.setTask(task);

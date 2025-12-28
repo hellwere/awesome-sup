@@ -8,6 +8,7 @@ import by.awesome.sup.dto.common.CommentDtoResponse;
 import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoResponse;
 import by.awesome.sup.dto.common.task.TaskUpdateDtoRequest;
+import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.entity.common.task.Task;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.TaskRepository;
@@ -39,11 +40,11 @@ public class TaskService {
     AttachmentService attachmentService;
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE')")
-    public TaskDtoResponse add(TaskDtoRequest taskDto) {
+    public TaskDtoResponse add(Project project, TaskDtoRequest taskDto) {
         Task createEntity = mapper.toCreateEntity(taskDto);
         createEntity.setOwner(JwtService.getAuthUserName());
-        Task task = repository.save(createEntity);
-        return mapper.toDto(task);
+        project.getTasks().add(createEntity);
+        return mapper.toDto(repository.save(createEntity));
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_READ')")
@@ -83,12 +84,12 @@ public class TaskService {
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public CommentDtoResponse addComment(Long id, CommentDtoRequest commentDtoRequest) {
         Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
-        return commentService.addComment(task, commentDtoRequest);
+        return commentService.add(task, commentDtoRequest);
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public AttachmentDtoResponse addAttachment(Long id, AttachmentDtoRequest attachmentDtoRequest) {
         Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
-        return attachmentService.addAttachment(task, attachmentDtoRequest);
+        return attachmentService.add(task, attachmentDtoRequest);
     }
 }

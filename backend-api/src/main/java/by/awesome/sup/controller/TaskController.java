@@ -39,11 +39,6 @@ public class TaskController {
         return service.findById(id);
     }
 
-    @PostMapping
-    public TaskDtoResponse add(@Valid @RequestBody TaskDtoRequest taskDto) {
-        return service.add(taskDto);
-    }
-
     @PutMapping("/{id}")
     public TaskDtoResponse update(Long id, @Valid @RequestBody TaskUpdateDtoRequest request) {
         return service.update(id, request);
@@ -54,7 +49,7 @@ public class TaskController {
         return service.delete(id);
     }
 
-    @PostMapping("/{id}/comments")
+    @PostMapping("/{id}/comment")
     public CommentDtoResponse addComment(@PathVariable Long id, @Valid @RequestBody CommentDtoRequest commentDtoRequest) {
         return service.addComment(id, commentDtoRequest);
     }
