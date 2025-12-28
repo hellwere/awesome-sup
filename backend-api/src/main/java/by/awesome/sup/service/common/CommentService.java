@@ -24,30 +24,8 @@ import java.util.NoSuchElementException;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommentService {
 
-    static int PAGE_SIZE = 15;
     CommentRepository repository;
     CommentMapper mapper;
-
-    /*@PreAuthorize("hasAuthority('COMMENT_CREATE') or hasAuthority('PERMISSION_CREATE')")
-    public CommentDtoResponse add(String entityType, Long id, @Valid CommentDtoRequest commentDtoRequest) {
-        if (entityType.equals("project")) {
-            Project project = projectRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(entityType, "id", id));
-            List<Comment> comments = project.getComments();
-            Comment comment = mapper.toCreateEntity(commentDtoRequest);
-            comments.add(comment);
-            projectRepository.save(project);
-            return mapper.toDto(comment);
-        } else if (entityType.equals("task")) {
-            Task task = taskRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(entityType, "id", id));
-            List<Comment> comments = task.getComments();
-            Comment comment = mapper.toCreateEntity(commentDtoRequest);
-            comments.add(comment);
-            taskRepository.save(task);
-            return mapper.toDto(comment);
-        } else {
-            throw new IllegalArgumentException("Incorrect entity type: " + entityType);
-        }
-    }*/
 
     @PreAuthorize("hasAuthority('COMMENT_READ') or hasAuthority('PERMISSION_CREATE')")
     public CommentDtoResponse findById(Long id) {

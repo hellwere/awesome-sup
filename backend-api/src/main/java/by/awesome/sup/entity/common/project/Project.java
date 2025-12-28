@@ -72,7 +72,7 @@ public class Project {
     @JoinTable(
             name = "project_members", schema = "sup",
             joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
+            inverseJoinColumns = @JoinColumn(name = "users_id")
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

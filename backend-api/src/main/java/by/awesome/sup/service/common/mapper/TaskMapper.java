@@ -13,7 +13,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = FileMapper.class)
 public interface TaskMapper {
     TaskDtoResponse toDto(Task task);
-    Task toEntity(TaskDtoRequest taskDto);
+    Task toEntity(TaskUpdateDtoRequest taskUpdateDtoRequest);
     @Named("merge")
     @Mapping(target = "id", ignore = true)
     void merge(TaskUpdateDtoRequest dto, @MappingTarget Task task);

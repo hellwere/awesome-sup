@@ -44,7 +44,7 @@ public class Task {
     @JoinColumn(name = "task_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    List<Attachment> attachments;
+    List<Attachment> attachments = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
