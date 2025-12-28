@@ -19,13 +19,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(schema = "sup", name = "user")
+@Table(schema = "sup", name = "users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements UserDetails {
 
     @Id
-    @SequenceGenerator(name = "userSq", sequenceName = "user_sq", schema = "sup", allocationSize = 1)
-    @GeneratedValue(generator = "userSq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "usersSq", sequenceName = "users_sq", schema = "sup", allocationSize = 1)
+    @GeneratedValue(generator = "usersSq", strategy = GenerationType.SEQUENCE)
     Long id;
     String name;
     @Column(nullable = false, unique = true)
@@ -39,8 +39,8 @@ public class User implements UserDetails {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_roles", schema = "sup",
-            joinColumns = @JoinColumn(name = "user_id"),
+            name = "users_roles", schema = "sup",
+            joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id")
     )
     @ToString.Exclude

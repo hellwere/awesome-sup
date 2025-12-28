@@ -38,6 +38,7 @@ public class TaskService {
     TaskMapper mapper;
     CommentService commentService;
     AttachmentService attachmentService;
+    TimesheetService timesheetService;
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE')")
     public TaskDtoResponse add(Project project, TaskDtoRequest taskDto) {
