@@ -1,6 +1,7 @@
 package by.awesome.sup.entity.common.task;
 
 import by.awesome.sup.entity.attachment.Attachment;
+import by.awesome.sup.entity.common.Comment;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.Timesheet;
 import jakarta.persistence.*;
@@ -44,6 +45,12 @@ public class Task {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Attachment> attachment;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "comment_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    List<Comment> comments = new ArrayList<>();
 
     @OneToMany
     @JoinColumn(name = "timesheet_id")

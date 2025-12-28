@@ -1,6 +1,8 @@
 package by.awesome.sup.entity.common.project;
 
+import by.awesome.sup.entity.attachment.Attachment;
 import by.awesome.sup.entity.authorization.User;
+import by.awesome.sup.entity.common.Comment;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.task.Tag;
 import by.awesome.sup.entity.common.task.Task;
@@ -46,6 +48,18 @@ public class Project {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Task> tasks = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "attachment_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    List<Attachment> attachments = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "comment_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    List<Comment> comments = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

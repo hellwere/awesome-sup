@@ -1,6 +1,8 @@
 package by.awesome.sup.dto.common.task;
 
 import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
+import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
+import by.awesome.sup.dto.common.CommentDtoResponse;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.task.Status;
 import by.awesome.sup.entity.common.task.Tag;
@@ -27,5 +29,6 @@ public class TaskDtoRequest {
     @NotNull
     Priority priority;
     @Valid
-    List<AttachmentDtoRequest> attachment;
+    List<AttachmentDtoRequest> attachments = new ArrayList<>();
+    List<CommentDtoResponse> comments = new ArrayList<>();
 }

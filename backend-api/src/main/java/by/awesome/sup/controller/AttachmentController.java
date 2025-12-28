@@ -5,7 +5,6 @@ import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
 import by.awesome.sup.dto.attachment.AttachmentPayloadDtoResponse;
 import by.awesome.sup.dto.attachment.FileDtoRequest;
 import by.awesome.sup.service.attachment.AttachmentService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +24,7 @@ public class AttachmentController {
     }
 
     @PostMapping
-    public AttachmentDtoResponse add(MultipartFile file) throws IOException {
+    public AttachmentDtoResponse add(@RequestParam String entityType, @RequestParam Long id, MultipartFile file) throws IOException {
         FileDtoRequest fileDtoRequest = new FileDtoRequest();
         fileDtoRequest.setData(file.getBytes());
 
@@ -33,7 +32,7 @@ public class AttachmentController {
         attachmentDto.setFormat(file.getContentType());
         attachmentDto.setLength(file.getSize());
         attachmentDto.setFile(fileDtoRequest);
-        return service.add(attachmentDto);
+        return service.add(entityType, id, attachmentDto);
     }
 
     @DeleteMapping("/{id}")
