@@ -1,8 +1,9 @@
 package by.awesome.sup.service.authorization;
 
-import by.awesome.sup.dto.authorization.UserDtoRequest;
-import by.awesome.sup.dto.authorization.UserDtoResponse;
-import by.awesome.sup.dto.authorization.UserUpdateDtoRequest;
+import by.awesome.sup.config.init.StartupListener;
+import by.awesome.sup.dto.authorization.*;
+import by.awesome.sup.entity.authorization.Grants;
+import by.awesome.sup.entity.authorization.Permission;
 import by.awesome.sup.entity.authorization.Role;
 import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.exceptions.RecordNotFoundException;
@@ -19,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -33,6 +36,23 @@ public class UserService {
     RoleService roleService;
     UserMapper mapper;
     PasswordEncoder encoder;
+
+    public UserRegistrationDtoResponse registration(UserRegistrationDtoRequest userDto) {
+        if (repository.existsByLogin(userDto.getLogin())) {
+            throw new RuntimeException("login must be unique!");
+        }
+        if (repository.existsByEmail(userDto.getEmail())) {
+            throw new RuntimeException("email must be unique!");
+        }
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
+        User createEntity = mapper.toCreateRegEntity(userDto);
+        createEntity.setOwner(userDto.getLogin());
+
+        List<Role> defaultUserRole = roleService.findByNameForService(StartupListener.DEFAULT_USER_ROLE_NAME);
+        createEntity.setRoles(defaultUserRole);
+        User user = repository.save(createEntity);
+        return mapper.toCreateRegDto(user);
+    }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE')")
     public UserDtoResponse add(UserDtoRequest userDto) {
@@ -73,7 +93,7 @@ public class UserService {
         return mapper.toDto(user);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_UPDATE') or hasAuthority('PERMISSION_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'USER', 'UPDATE')")
     public UserDtoResponse update(@Valid UserUpdateDtoRequest userUpdateDtoRequest) {
         Long id = userUpdateDtoRequest.getId();
         User user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", "id", id));

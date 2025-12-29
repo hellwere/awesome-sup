@@ -37,6 +37,10 @@ public class RoleService {
         return mapper.toDto(roleN);
     }
 
+    public List<Role> findByNameForService(String name) {
+        return repository.findByName(name);
+    }
+
     @PreAuthorize("hasAuthority('PERMISSION_READ') or hasAuthority('PERMISSION_CREATE')")
     public List<RoleDtoResponse> findByName(String name) {
         List<Role> role = repository.findByName(name);

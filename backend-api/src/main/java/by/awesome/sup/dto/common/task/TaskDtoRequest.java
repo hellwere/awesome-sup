@@ -1,7 +1,6 @@
 package by.awesome.sup.dto.common.task;
 
 import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
-import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
 import by.awesome.sup.dto.common.CommentDtoResponse;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.task.Status;

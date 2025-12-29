@@ -12,11 +12,8 @@ import by.awesome.sup.service.common.mapper.CommentMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -28,7 +25,7 @@ public class CommentService {
     CommentMapper mapper;
 
     public CommentDtoResponse findById(Long id) {
-        Comment comment = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Comment with id=" + id + " not exists!"));
+        Comment comment = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Comment", "id", id));
         return mapper.toDto(comment);
     }
 

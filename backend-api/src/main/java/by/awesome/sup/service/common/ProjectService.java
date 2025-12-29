@@ -78,6 +78,14 @@ public class ProjectService {
         return mapper.toDto(project);
     }
 
+    @Transactional(readOnly = true)
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('DASHBOARD_READ')")
+    public List<ProjectDtoResponse> findByOwner() {
+        String owner = JwtService.getAuthUserName();
+        List<Project> projects = repository.findByOwner(owner);
+        return projects.stream().map(mapper::toDto).toList();
+    }
+
     @Transactional
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'PROJECT', 'UPDATE')")
     public ProjectDtoResponse update(Long id, ProjectUpdateDtoRequest projectUpdateDtoRequest) {

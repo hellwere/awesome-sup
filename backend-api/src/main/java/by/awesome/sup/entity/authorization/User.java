@@ -31,6 +31,8 @@ public class User implements UserDetails {
     String name;
     @Column(nullable = false, unique = true)
     String login;
+    @Column(nullable = false, updatable = false)
+    String owner;
     @Column(nullable = false)
     String password;
     @Column(nullable = false, unique = true)

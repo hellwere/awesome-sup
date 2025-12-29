@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -53,7 +52,7 @@ public class TimesheetService {
 
     @PreAuthorize("hasAuthority('TIMESHEET_READ') or hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'TIMESHEET', 'READ')")
     public TimesheetDtoResponse findById(Long id) {
-        Timesheet task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Timesheet with id=" + id + " not exists!"));
+        Timesheet task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Timesheet", "id", id));
         return mapper.toDto(task);
     }
 

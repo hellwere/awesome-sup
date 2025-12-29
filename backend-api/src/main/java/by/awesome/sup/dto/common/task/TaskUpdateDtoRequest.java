@@ -22,6 +22,7 @@ public class TaskUpdateDtoRequest {
     Long id;
     @NotBlank
     String name;
+    String owner;
     @NotNull
     Status status;
     @Valid

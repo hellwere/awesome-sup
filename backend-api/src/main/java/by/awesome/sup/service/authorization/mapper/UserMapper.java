@@ -1,8 +1,6 @@
 package by.awesome.sup.service.authorization.mapper;
 
-import by.awesome.sup.dto.authorization.UserDtoRequest;
-import by.awesome.sup.dto.authorization.UserDtoResponse;
-import by.awesome.sup.dto.authorization.UserUpdateDtoRequest;
+import by.awesome.sup.dto.authorization.*;
 import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.service.attachment.mapper.FileMapper;
 import org.mapstruct.*;
@@ -21,4 +19,9 @@ public interface UserMapper {
     @Named("toCreateEntity")
     @Mapping(target = "id", ignore = true)
     User toCreateEntity(UserDtoRequest userDto);
+
+    @Named("toCreateRegEntity")
+    User toCreateRegEntity(UserRegistrationDtoRequest userDto);
+    @Named("toCreateRegDto")
+    UserRegistrationDtoResponse toCreateRegDto(User user);
 }

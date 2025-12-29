@@ -11,13 +11,13 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
-import java.util.List;
 
 @Component
 public class StartupListener implements ApplicationListener<ContextRefreshedEvent> {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    public static final String DEFAULT_USER_ROLE_NAME = "DEFAULT_USER_ROLE";
 
     public StartupListener(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
@@ -41,9 +41,22 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
             user.setLogin("admin");
             user.setPassword("$2a$10$yElZRFGDHmJGkbzYk2/nju9g/.krMW2Bc92fB91f3g1ZaDq.zbkTG");
             user.setEmail("admin@awesomesup.by");
+            user.setOwner("admin");
             roleRepository.save(role);
             user.setRoles(Collections.singletonList(role));
             userRepository.save(user);
+        }
+
+        // Для пользователя прошедшего через регистрацию
+        if (roleRepository.findByName(DEFAULT_USER_ROLE_NAME).isEmpty()) {
+            Permission defaultUserPermission = new Permission();
+            defaultUserPermission.setName("DASHBOARD");
+            defaultUserPermission.setGrants(Grants.READ);
+
+            Role defaultUserRole = new Role();
+            defaultUserRole.setName(DEFAULT_USER_ROLE_NAME);
+            defaultUserRole.setPermissions(Collections.singletonList(defaultUserPermission));
+            roleRepository.save(defaultUserRole);
         }
     }
 }

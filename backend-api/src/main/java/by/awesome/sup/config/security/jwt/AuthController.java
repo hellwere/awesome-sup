@@ -4,19 +4,22 @@ import by.awesome.sup.config.security.jwt.model.AuthRequest;
 import by.awesome.sup.config.security.jwt.model.AuthResponse;
 import by.awesome.sup.config.security.jwt.model.LogoutRequest;
 import by.awesome.sup.config.security.jwt.model.RefreshRequest;
+import by.awesome.sup.dto.authorization.DashboardDtoResponse;
+import by.awesome.sup.dto.authorization.UserRegistrationDtoRequest;
+import by.awesome.sup.dto.authorization.UserRegistrationDtoResponse;
 import by.awesome.sup.entity.authorization.RefreshToken;
 import by.awesome.sup.service.authorization.RefreshTokenService;
+import by.awesome.sup.service.authorization.UserService;
+import by.awesome.sup.service.common.ProjectService;
+import by.awesome.sup.service.common.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.ErrorResponseException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -29,11 +32,27 @@ public class AuthController {
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
+    private final UserService service;
+    private final ProjectService projectService;
+    private final TaskService taskService;
+
+    @PostMapping("/registration")
+    public UserRegistrationDtoResponse login(@Valid @RequestBody UserRegistrationDtoRequest request) {
+        return service.registration(request);
+    }
+
+    @GetMapping("/dashboard")
+    public DashboardDtoResponse getDashBoard() {
+        DashboardDtoResponse dashboardDtoResponse = new DashboardDtoResponse();
+        dashboardDtoResponse.setProjects(projectService.findByOwner());
+        dashboardDtoResponse.setTasks(taskService.findByOwner());
+        return dashboardDtoResponse;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         try {
-            Authentication authentication = authManager.authenticate(
+            authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.login(), request.password())
             );
             String token = jwtService.generateToken(request.login());

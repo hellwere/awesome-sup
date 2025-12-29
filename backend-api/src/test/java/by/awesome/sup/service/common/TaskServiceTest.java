@@ -5,6 +5,7 @@ import by.awesome.sup.dto.common.task.TaskUpdateDtoRequest;
 import by.awesome.sup.entity.common.task.Task;
 import by.awesome.sup.repository.TaskRepository;
 import by.awesome.sup.service.attachment.AttachmentService;
+import by.awesome.sup.service.authorization.UserService;
 import by.awesome.sup.service.common.mapper.TaskMapper;
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Test;
@@ -29,12 +30,13 @@ class TaskServiceTest {
     CommentService commentService;
     AttachmentService attachmentService;
     TimesheetService timesheetService;
+    UserService userService;
     TaskRepository repository = Mockito.mock(TaskRepository.class);
 
 
     @PostConstruct
     private void init() {
-        service = new TaskService(repository, mapper, commentService, attachmentService, timesheetService);
+        service = new TaskService(repository, mapper, commentService, attachmentService, timesheetService, userService);
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(User
                 .withUsername("login")
                 .password("password")

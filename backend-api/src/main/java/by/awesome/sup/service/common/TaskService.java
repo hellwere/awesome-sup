@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -70,13 +69,21 @@ public class TaskService {
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'TASK', 'READ')")
     public TaskDtoResponse findById(Long id) {
-        Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
+        Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
         return mapper.toDto(task);
+    }
+
+    @Transactional(readOnly = true)
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('DASHBOARD_READ')")
+    public List<TaskDtoResponse> findByOwner() {
+        String owner = JwtService.getAuthUserName();
+        List<Task> tasks = repository.findByOwner(owner);
+        return tasks.stream().map(mapper::toDto).toList();
     }
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'TASK', 'UPDATE')")
     public TaskDtoResponse update(Long id, TaskUpdateDtoRequest taskDtoRequest) {
-        Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
+        Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
         List<User> users = userService.findByLoginIn(taskDtoRequest.getUserList());
         if (users.size() != taskDtoRequest.getUserList().size()) {
             List<String> roleNames = users.stream().map(User::getName).toList();
@@ -91,7 +98,7 @@ public class TaskService {
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'TASK', 'DELETE')")
     public TaskDtoResponse delete(Long id) {
-        Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
+        Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
         repository.delete(task);
         return mapper.toDto(task);
     }
