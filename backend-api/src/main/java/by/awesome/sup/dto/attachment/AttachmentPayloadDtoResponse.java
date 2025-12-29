@@ -15,5 +15,5 @@ public class AttachmentPayloadDtoResponse {
     Long length;
     @NotNull
     FilePayloadDtoResponse file;
-    LocalDateTime updatedAt;
+    LocalDateTime createdAt;
 }

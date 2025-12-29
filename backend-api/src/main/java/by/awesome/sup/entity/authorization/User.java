@@ -27,15 +27,17 @@ public class User implements UserDetails {
     @SequenceGenerator(name = "usersSq", sequenceName = "users_sq", schema = "sup", allocationSize = 1)
     @GeneratedValue(generator = "usersSq", strategy = GenerationType.SEQUENCE)
     Long id;
+    @Column(nullable = false)
     String name;
     @Column(nullable = false, unique = true)
     String login;
+    @Column(nullable = false)
     String password;
     @Column(nullable = false, unique = true)
     String email;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    LocalDateTime creationAt;
+    LocalDateTime createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

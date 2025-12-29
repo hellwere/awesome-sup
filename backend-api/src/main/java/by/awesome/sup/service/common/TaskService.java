@@ -56,7 +56,7 @@ public class TaskService {
             List<String> result = taskDto.getUserList().stream().filter(el -> !roleNames.contains(el)).toList();
             throw new IllegalArgumentException("Check user logins, not exists: " + result);
         }
-        createEntity.getUsers().addAll(users);
+        createEntity.setUsers(users);
         project.getTasks().add(createEntity);
         Task task = repository.save(createEntity);
         return mapper.toDto(task);
@@ -84,7 +84,7 @@ public class TaskService {
             throw new IllegalArgumentException("Check user logins, not exists: " + result);
         }
         mapper.merge(taskDtoRequest, task);
-        task.getUsers().addAll(users);
+        task.setUsers(users);
         Task newTask = repository.save(task);
         return mapper.toDto(newTask);
     }

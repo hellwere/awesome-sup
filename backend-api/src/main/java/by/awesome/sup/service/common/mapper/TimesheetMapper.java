@@ -4,10 +4,7 @@ import by.awesome.sup.dto.common.TimesheetDtoRequest;
 import by.awesome.sup.dto.common.TimesheetDtoResponse;
 import by.awesome.sup.dto.common.TimesheetUpdateDtoRequest;
 import by.awesome.sup.entity.common.Timesheet;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface TimesheetMapper {
@@ -15,6 +12,7 @@ public interface TimesheetMapper {
     Timesheet toEntity(TimesheetDtoRequest timesheetDto);
     @Named("merge")
     @Mapping(target = "id", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void merge(TimesheetUpdateDtoRequest dto, @MappingTarget Timesheet timesheet);
 
     @Mapping(target = "id", ignore = true)

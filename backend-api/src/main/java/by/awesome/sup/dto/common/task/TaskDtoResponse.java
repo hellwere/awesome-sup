@@ -22,7 +22,8 @@ public class TaskDtoResponse {
     String name;
     Status status;
     List<Tag> tags = new ArrayList<>();
-    LocalDateTime creationAt;
+    LocalDateTime updatedAt;
+    LocalDateTime createdAt;
     Integer estimate;
     Priority priority;
     List<AttachmentDtoResponse> attachments = new ArrayList<>();

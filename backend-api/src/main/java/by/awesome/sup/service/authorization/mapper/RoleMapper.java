@@ -4,10 +4,7 @@ import by.awesome.sup.dto.authorization.RoleDtoRequest;
 import by.awesome.sup.dto.authorization.RoleDtoResponse;
 import by.awesome.sup.dto.authorization.RoleUpdateDtoRequest;
 import by.awesome.sup.entity.authorization.Role;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", uses = PermissionMapper.class)
 public interface RoleMapper {
@@ -18,6 +15,7 @@ public interface RoleMapper {
     Role toEntity(RoleDtoRequest roleDtoRequest);
     @Named("merge")
     @Mapping(target = "id", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void merge(RoleUpdateDtoRequest dto, @MappingTarget Role role);
 
     @Mapping(target = "id", ignore = true)

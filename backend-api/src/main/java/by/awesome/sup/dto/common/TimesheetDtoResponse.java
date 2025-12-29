@@ -17,6 +17,7 @@ public class TimesheetDtoResponse {
     @NotNull
     @Positive
     Double loggedTime;
+    String owner;
     LocalDateTime loggedAt;
     LocalDateTime createdAt;
     TimesheetProjectDtoResponse project;

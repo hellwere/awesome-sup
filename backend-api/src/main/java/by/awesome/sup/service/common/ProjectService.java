@@ -59,7 +59,7 @@ public class ProjectService {
             List<String> result = projectDto.getUserList().stream().filter(el -> !roleNames.contains(el)).toList();
             throw new IllegalArgumentException("Check user logins, not exists: " + result);
         }
-        createEntity.getUsers().addAll(users);
+        createEntity.setUsers(users);;
         Project project = repository.save(createEntity);
         return mapper.toDto(project);
     }
@@ -89,7 +89,7 @@ public class ProjectService {
             throw new IllegalArgumentException("Check user logins, not exists: " + result);
         }
         mapper.merge(projectUpdateDtoRequest, project);
-        project.getUsers().addAll(users);
+        project.setUsers(users);
         Project newProject = repository.save(project);
         return mapper.toDto(newProject);
     }

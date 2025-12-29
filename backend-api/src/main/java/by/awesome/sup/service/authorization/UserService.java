@@ -50,7 +50,7 @@ public class UserService {
             throw new IllegalArgumentException("Check roles not exists: " + result);
         }
         User createEntity = mapper.toCreateEntity(userDto);
-        createEntity.getRoles().addAll(roles);
+        createEntity.setRoles(roles);
         User user = repository.save(createEntity);
         return mapper.toDto(user);
     }
@@ -84,7 +84,7 @@ public class UserService {
             throw new IllegalArgumentException("Check roles not exists: " + result);
         }
         mapper.merge(userUpdateDtoRequest, user);
-        user.getRoles().addAll(roles);
+        user.setRoles(roles);
         User newUser = repository.save(user);
         return mapper.toDto(newUser);
     }

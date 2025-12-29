@@ -26,7 +26,8 @@ public class ProjectDtoResponse {
     @NotNull
     Status status;
     List<Tag> tags = new ArrayList<>();
-    LocalDateTime creationAt;
+    LocalDateTime updatedAt;
+    LocalDateTime createdAt;
     Integer estimate;
     @NotNull
     Priority priority;

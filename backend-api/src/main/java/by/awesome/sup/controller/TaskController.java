@@ -42,7 +42,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public TaskDtoResponse update(Long id, @Valid @RequestBody TaskUpdateDtoRequest request) {
+    public TaskDtoResponse update(@PathVariable Long id, @Valid @RequestBody TaskUpdateDtoRequest request) {
         return service.update(id, request);
     }
 

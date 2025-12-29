@@ -5,10 +5,7 @@ import by.awesome.sup.dto.common.project.ProjectDtoResponse;
 import by.awesome.sup.dto.common.project.ProjectUpdateDtoRequest;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.service.attachment.mapper.FileMapper;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", uses = FileMapper.class)
 public interface ProjectMapper {
@@ -18,6 +15,7 @@ public interface ProjectMapper {
     Project toEntity(ProjectDtoRequest projectDto);
     @Named("merge")
     @Mapping(target = "id", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void merge(ProjectUpdateDtoRequest dto, @MappingTarget Project project);
 
     @Mapping(target = "id", ignore = true)

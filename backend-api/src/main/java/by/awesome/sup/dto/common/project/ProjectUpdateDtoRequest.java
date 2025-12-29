@@ -1,8 +1,5 @@
 package by.awesome.sup.dto.common.project;
 
-import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
-import by.awesome.sup.dto.common.CommentDtoResponse;
-import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.project.Status;
 import by.awesome.sup.entity.common.task.Tag;
@@ -30,7 +27,5 @@ public class ProjectUpdateDtoRequest {
     Integer estimate;
     @NotNull
     Priority priority;
-    List<AttachmentDtoResponse> attachments = new ArrayList<>();
-    List<CommentDtoResponse> comments = new ArrayList<>();
     List<String> userList = new ArrayList<>();
 }
