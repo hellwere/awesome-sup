@@ -66,7 +66,7 @@ public class Project {
     @EqualsAndHashCode.Exclude
     List<Comment> comments = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

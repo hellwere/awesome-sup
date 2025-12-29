@@ -3,6 +3,7 @@ package by.awesome.sup.service.common;
 import by.awesome.sup.config.security.jwt.JwtService;
 import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
 import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
+import by.awesome.sup.dto.authorization.UserDtoResponse;
 import by.awesome.sup.dto.common.CommentDtoRequest;
 import by.awesome.sup.dto.common.CommentDtoResponse;
 import by.awesome.sup.dto.common.TimesheetDtoRequest;
@@ -12,10 +13,15 @@ import by.awesome.sup.dto.common.project.ProjectDtoResponse;
 import by.awesome.sup.dto.common.project.ProjectUpdateDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoResponse;
+import by.awesome.sup.entity.attachment.Attachment;
+import by.awesome.sup.entity.authorization.Role;
+import by.awesome.sup.entity.authorization.User;
+import by.awesome.sup.entity.common.Comment;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.exceptions.RecordNotFoundException;
 import by.awesome.sup.repository.ProjectRepository;
 import by.awesome.sup.service.attachment.AttachmentService;
+import by.awesome.sup.service.authorization.UserService;
 import by.awesome.sup.service.common.mapper.ProjectMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -42,11 +48,19 @@ public class ProjectService {
     CommentService commentService;
     AttachmentService attachmentService;
     TimesheetService timesheetService;
+    UserService userService;
 
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public ProjectDtoResponse add(ProjectDtoRequest projectDto) {
         Project createEntity = mapper.toCreateEntity(projectDto);
         createEntity.setOwner(JwtService.getAuthUserName());
+        List<User> users = userService.findByLoginIn(projectDto.getUserList());
+        if (users.size() != projectDto.getUserList().size()) {
+            List<String> roleNames = users.stream().map(User::getName).toList();
+            List<String> result = projectDto.getUserList().stream().filter(el -> !roleNames.contains(el)).toList();
+            throw new IllegalArgumentException("Check user logins, not exists: " + result);
+        }
+        createEntity.getUsers().addAll(users);
         Project project = repository.save(createEntity);
         return mapper.toDto(project);
     }
@@ -66,7 +80,14 @@ public class ProjectService {
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'PROJECT', 'UPDATE')")
     public ProjectDtoResponse update(Long id, ProjectUpdateDtoRequest projectUpdateDtoRequest) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
+        List<User> users = userService.findByLoginIn(projectUpdateDtoRequest.getUserList());
+        if (users.size() != projectUpdateDtoRequest.getUserList().size()) {
+            List<String> roleNames = users.stream().map(User::getName).toList();
+            List<String> result = projectUpdateDtoRequest.getUserList().stream().filter(el -> !roleNames.contains(el)).toList();
+            throw new IllegalArgumentException("Check user logins, not exists: " + result);
+        }
         mapper.merge(projectUpdateDtoRequest, project);
+        project.getUsers().addAll(users);
         Project newProject = repository.save(project);
         return mapper.toDto(newProject);
     }
@@ -109,8 +130,9 @@ public class ProjectService {
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public CommentDtoResponse deleteComment(Long id, Long commentId) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
-        project.getComments().stream().filter(comment -> comment.getId().equals(commentId))
+        Comment comment = project.getComments().stream().filter(comm -> comm.getId().equals(commentId))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException("Project not contains comment: " + commentId));
+        project.getComments().remove(comment);
         return commentService.delete(commentId);
     }
 
@@ -123,8 +145,9 @@ public class ProjectService {
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public AttachmentDtoResponse deleteAttachment(Long id, Long attachmentId) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
-        project.getAttachments().stream().filter(comment -> comment.getId().equals(attachmentId))
+        Attachment attachment = project.getAttachments().stream().filter(comment -> comment.getId().equals(attachmentId))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException("Project not contains attachment: " + attachmentId));
+        project.getAttachments().remove(attachment);
         return attachmentService.delete(attachmentId);
     }
 

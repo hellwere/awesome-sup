@@ -73,6 +73,11 @@ public class UserService {
         return mapper.toDto(user);
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_READ') or hasAuthority('PERMISSION_CREATE')")
+    public List<User> findByLoginIn(List<String> logins) {
+        return repository.findByLoginIn(logins);
+    }
+
     @PreAuthorize("hasAuthority('PERMISSION_UPDATE') or hasAuthority('PERMISSION_CREATE')")
     public UserDtoResponse update(@Valid UserUpdateDtoRequest userUpdateDtoRequest) {
         Long id = userUpdateDtoRequest.getId();

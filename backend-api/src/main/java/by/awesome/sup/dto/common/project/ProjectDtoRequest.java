@@ -26,5 +26,5 @@ public class ProjectDtoRequest {
     Integer estimate;
     @NotNull
     Priority priority;
-    List<ProjectUserDtoRequest> users = new ArrayList<>();
+    List<String> userList = new ArrayList<>();
 }

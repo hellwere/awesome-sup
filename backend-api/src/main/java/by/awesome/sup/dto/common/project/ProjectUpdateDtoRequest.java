@@ -32,5 +32,5 @@ public class ProjectUpdateDtoRequest {
     Priority priority;
     List<AttachmentDtoResponse> attachments = new ArrayList<>();
     List<CommentDtoResponse> comments = new ArrayList<>();
-    List<ProjectUserDtoRequest> users = new ArrayList<>();
+    List<String> userList = new ArrayList<>();
 }

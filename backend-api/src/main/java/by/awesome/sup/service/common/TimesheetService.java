@@ -34,10 +34,11 @@ public class TimesheetService {
     TimesheetMapper mapper;
 
     @PreAuthorize("hasAuthority('TIMESHEET_CREATE') or hasAuthority('PERMISSION_CREATE')")
-    public TimesheetDtoResponse add(Project project, TimesheetDtoRequest taskDto) {
-        Timesheet createEntity = mapper.toCreateEntity(taskDto);
+    public TimesheetDtoResponse add(Project project, TimesheetDtoRequest timesheetDtoRequest) {
+        Timesheet createEntity = mapper.toCreateEntity(timesheetDtoRequest);
         createEntity.setOwner(JwtService.getAuthUserName());
         project.getTimesheets().add(createEntity);
+        createEntity.setProject(project);
         Timesheet timesheet = repository.save(createEntity);
         return mapper.toDto(timesheet);
     }
@@ -47,6 +48,7 @@ public class TimesheetService {
         Timesheet createEntity = mapper.toCreateEntity(taskDto);
         createEntity.setOwner(JwtService.getAuthUserName());
         task.getTimesheets().add(createEntity);
+        createEntity.setTask(task);
         Timesheet timesheet = repository.save(createEntity);
         return mapper.toDto(timesheet);
     }

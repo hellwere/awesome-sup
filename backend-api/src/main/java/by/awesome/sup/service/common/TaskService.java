@@ -10,6 +10,8 @@ import by.awesome.sup.dto.common.TimesheetDtoResponse;
 import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoResponse;
 import by.awesome.sup.dto.common.task.TaskUpdateDtoRequest;
+import by.awesome.sup.entity.attachment.Attachment;
+import by.awesome.sup.entity.common.Comment;
 import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.entity.common.task.Task;
 import by.awesome.sup.exceptions.RecordNotFoundException;
@@ -101,8 +103,9 @@ public class TaskService {
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public CommentDtoResponse deleteComment(Long id, Long commentId) {
         Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
-        task.getComments().stream().filter(comment -> comment.getId().equals(commentId))
+        Comment comment = task.getComments().stream().filter(comm -> comm.getId().equals(commentId))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException("Task not contains comment: " + commentId));
+        task.getComments().remove(comment);
         return commentService.delete(commentId);
     }
 
@@ -115,8 +118,9 @@ public class TaskService {
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public AttachmentDtoResponse deleteAttachment(Long id, Long attachmentId) {
         Task task = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Task", "id", id));
-        task.getAttachments().stream().filter(comment -> comment.getId().equals(attachmentId))
+        Attachment attachment = task.getAttachments().stream().filter(comment -> comment.getId().equals(attachmentId))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException("Task not contains attachment: " + attachmentId));
+        task.getAttachments().remove(attachment);
         return attachmentService.delete(attachmentId);
     }
 
