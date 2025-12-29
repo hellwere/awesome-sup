@@ -68,13 +68,13 @@ public class TaskService {
         return project.stream().map(mapper::toDto).toList();
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission('#id', 'TASK', 'READ')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'TASK', 'READ')")
     public TaskDtoResponse findById(Long id) {
         Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
         return mapper.toDto(task);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission('#id', 'TASK', 'UPDATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'TASK', 'UPDATE')")
     public TaskDtoResponse update(Long id, TaskUpdateDtoRequest taskDtoRequest) {
         Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
         List<User> users = userService.findByLoginIn(taskDtoRequest.getUserList());
@@ -89,7 +89,7 @@ public class TaskService {
         return mapper.toDto(newTask);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission('#id', 'TASK', 'DELETE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'TASK', 'DELETE')")
     public TaskDtoResponse delete(Long id) {
         Task task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Task with id=" + id + " not exists!"));
         repository.delete(task);
