@@ -25,7 +25,5 @@ public class UserUpdateDtoRequest {
     String password;
     @NotBlank
     String email;
-    @Valid
-    @NotEmpty
-    List<RoleUpdateDtoRequest> roles = new ArrayList<>();
+    List<String> roleList = new ArrayList<>();
 }

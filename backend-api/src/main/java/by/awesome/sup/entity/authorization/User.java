@@ -37,7 +37,7 @@ public class User implements UserDetails {
     @Column(name = "created_at", nullable = false, updatable = false)
     LocalDateTime creationAt;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles", schema = "sup",
             joinColumns = @JoinColumn(name = "users_id"),
@@ -47,7 +47,7 @@ public class User implements UserDetails {
     @EqualsAndHashCode.Exclude
     List<Role> roles = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Project> projects = new ArrayList<>();

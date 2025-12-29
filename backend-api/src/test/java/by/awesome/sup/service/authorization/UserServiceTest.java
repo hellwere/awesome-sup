@@ -24,13 +24,14 @@ class UserServiceTest {
     @Autowired
     UserMapper mapper;
     UserService service;
+    RoleService roleService;
     PasswordEncoder encoder = Mockito.mock(PasswordEncoder.class);
     UserRepository repository = Mockito.mock(UserRepository.class);
 
 
     @PostConstruct
     private void init() {
-        service = new UserService(repository, mapper, encoder);
+        service = new UserService(repository, roleService, mapper, encoder);
     }
 
     @Test

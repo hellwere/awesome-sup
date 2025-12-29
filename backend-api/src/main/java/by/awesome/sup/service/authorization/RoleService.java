@@ -71,4 +71,9 @@ public class RoleService {
         Iterable<Role> role = repository.findAll(pageable);
         return StreamSupport.stream(role.spliterator(), false).map(mapper::toDto).toList();
     }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE')")
+    public List<Role> findByNames(List<String> roles) {
+        return repository.findByNameIn(roles);
+    }
 }
