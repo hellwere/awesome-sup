@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -67,6 +68,9 @@ public class TaskController {
 
     @PostMapping("/{id}/attachment")
     public AttachmentDtoResponse addAttachment(@PathVariable Long id, MultipartFile file) throws IOException {
+        if (file == null) {
+            throw new FileNotFoundException("Empty file, check file payload!");
+        }
         FileDtoRequest fileDtoRequest = new FileDtoRequest();
         fileDtoRequest.setData(file.getBytes());
 

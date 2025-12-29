@@ -47,7 +47,7 @@ public class User implements UserDetails {
     @EqualsAndHashCode.Exclude
     List<Role> roles = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Project> projects = new ArrayList<>();

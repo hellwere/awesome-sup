@@ -73,11 +73,6 @@ public class UserService {
         return mapper.toDto(user);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_READ') or hasAuthority('PERMISSION_CREATE')")
-    public List<User> findByLoginIn(List<String> logins) {
-        return repository.findByLoginIn(logins);
-    }
-
     @PreAuthorize("hasAuthority('PERMISSION_UPDATE') or hasAuthority('PERMISSION_CREATE')")
     public UserDtoResponse update(@Valid UserUpdateDtoRequest userUpdateDtoRequest) {
         Long id = userUpdateDtoRequest.getId();
@@ -106,5 +101,10 @@ public class UserService {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Iterable<User> users = repository.findAll(pageable);
         return StreamSupport.stream(users.spliterator(), false).map(mapper::toDto).toList();
+    }
+
+    // Сервисы вызываемый из доверенного источника
+    public List<User> findByLoginIn(List<String> logins) {
+        return repository.findByLoginIn(logins);
     }
 }

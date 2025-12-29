@@ -1,6 +1,7 @@
 package by.awesome.sup.entity.common.task;
 
 import by.awesome.sup.entity.attachment.Attachment;
+import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.entity.common.Comment;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.Timesheet;
@@ -61,4 +62,14 @@ public class Task {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Timesheet> timesheets = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "task_members", schema = "sup",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "users_id")
+    )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    List<User> users = new ArrayList<>();
 }

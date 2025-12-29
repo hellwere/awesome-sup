@@ -2,6 +2,7 @@ package by.awesome.sup.config.security.authorization;
 
 import by.awesome.sup.repository.ProjectRepository;
 import by.awesome.sup.repository.TaskRepository;
+import by.awesome.sup.repository.TimesheetRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
@@ -15,9 +16,11 @@ public class EntityLoader {
     public final Map<String, JpaRepository<?, Long>> repositories = new HashMap<>();
 
     public EntityLoader(ProjectRepository projectRepository,
-                        TaskRepository taskRepository) {
+                        TaskRepository taskRepository,
+                        TimesheetRepository timesheetRepository) {
         this.repositories.put("PROJECT", projectRepository);
         this.repositories.put("TASK", taskRepository);
+        this.repositories.put("TIMESHEET", timesheetRepository);
     }
 
     public Object loadEntity(Long id, String type) {

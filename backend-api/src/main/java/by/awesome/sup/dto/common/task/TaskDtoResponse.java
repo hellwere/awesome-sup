@@ -28,4 +28,5 @@ public class TaskDtoResponse {
     List<AttachmentDtoResponse> attachments = new ArrayList<>();
     List<CommentDtoResponse> comments = new ArrayList<>();
     List<TimesheetDtoResponse> timesheets = new ArrayList<>();
+    List<TaskUserDtoResponse> users = new ArrayList<>();
 }

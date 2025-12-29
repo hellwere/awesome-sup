@@ -3,7 +3,7 @@ package by.awesome.sup.service.common;
 import by.awesome.sup.config.security.jwt.JwtService;
 import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
 import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
-import by.awesome.sup.dto.authorization.UserDtoResponse;
+import by.awesome.sup.dto.attachment.AttachmentPayloadDtoResponse;
 import by.awesome.sup.dto.common.CommentDtoRequest;
 import by.awesome.sup.dto.common.CommentDtoResponse;
 import by.awesome.sup.dto.common.TimesheetDtoRequest;
@@ -14,7 +14,6 @@ import by.awesome.sup.dto.common.project.ProjectUpdateDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoRequest;
 import by.awesome.sup.dto.common.task.TaskDtoResponse;
 import by.awesome.sup.entity.attachment.Attachment;
-import by.awesome.sup.entity.authorization.Role;
 import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.entity.common.Comment;
 import by.awesome.sup.entity.common.project.Project;
@@ -65,18 +64,21 @@ public class ProjectService {
         return mapper.toDto(project);
     }
 
+    @Transactional(readOnly = true)
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_READ')")
     public List<ProjectDtoResponse> findByName(String name) {
         List<Project> project = repository.findByName(name);
         return project.stream().map(mapper::toDto).toList();
     }
 
+    @Transactional(readOnly = true)
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'PROJECT', 'READ')")
     public ProjectDtoResponse findById(Long id) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         return mapper.toDto(project);
     }
 
+    @Transactional
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'PROJECT', 'UPDATE')")
     public ProjectDtoResponse update(Long id, ProjectUpdateDtoRequest projectUpdateDtoRequest) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
@@ -92,6 +94,7 @@ public class ProjectService {
         return mapper.toDto(newProject);
     }
 
+    @Transactional
     @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'PROJECT', 'DELETE')")
     public ProjectDtoResponse delete(Long id) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
@@ -99,27 +102,26 @@ public class ProjectService {
         return mapper.toDto(project);
     }
 
-    @org.springframework.transaction.annotation.Transactional(readOnly = true)
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_READ')")
     public List<ProjectDtoResponse> findAll(int page) {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Iterable<Project> projects = repository.findAll(pageable);
         return StreamSupport.stream(projects.spliterator(), false).map(mapper::toDto).toList();
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE') or hasPermission(#id, 'PROJECT', 'UPDATE')")
     public TaskDtoResponse addTask(Long id, TaskDtoRequest taskDtoRequest) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         return taskService.add(project, taskDtoRequest);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE') or hasPermission(#id, 'PROJECT', 'UPDATE')")
     public CommentDtoResponse addComment(Long id, CommentDtoRequest commentDtoRequest) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         return commentService.add(project, commentDtoRequest);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE') or hasPermission(#id, 'PROJECT', 'UPDATE')")
     public CommentDtoResponse updateComment(Long id, Long commentId, CommentDtoRequest commentDtoRequest) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         project.getComments().stream().filter(comment -> comment.getId().equals(commentId))
@@ -127,7 +129,7 @@ public class ProjectService {
         return commentService.update(commentId, commentDtoRequest);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE') or hasPermission(#id, 'PROJECT', 'UPDATE')")
     public CommentDtoResponse deleteComment(Long id, Long commentId) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         Comment comment = project.getComments().stream().filter(comm -> comm.getId().equals(commentId))
@@ -136,13 +138,21 @@ public class ProjectService {
         return commentService.delete(commentId);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'PROJECT', 'READ')")
+    public AttachmentPayloadDtoResponse findAttachmentById(Long id, Long attachmentId) {
+        Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
+        project.getAttachments().stream().filter(attachment -> attachment.getId().equals(attachmentId)).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Project not contains attachment: " + attachmentId));
+        return attachmentService.findById(attachmentId);
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE') or hasPermission(#id, 'PROJECT', 'UPDATE')")
     public AttachmentDtoResponse addAttachment(Long id, AttachmentDtoRequest attachmentDtoRequest) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         return attachmentService.add(project, attachmentDtoRequest);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE') or hasPermission(#id, 'PROJECT', 'UPDATE')")
     public AttachmentDtoResponse deleteAttachment(Long id, Long attachmentId) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         Attachment attachment = project.getAttachments().stream().filter(comment -> comment.getId().equals(attachmentId))
@@ -151,7 +161,7 @@ public class ProjectService {
         return attachmentService.delete(attachmentId);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('TASK_CREATE') or hasPermission(#id, 'PROJECT', 'UPDATE')")
     public TimesheetDtoResponse addTimesheet(Long id, TimesheetDtoRequest timesheetDtoRequest) {
         Project project = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Project", "id", id));
         return timesheetService.add(project, timesheetDtoRequest);
