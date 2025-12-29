@@ -19,10 +19,8 @@ public class UserDtoResponse {
     @NotBlank
     String login;
     @NotBlank
-    String password;
-    @NotBlank
     String email;
-    LocalDateTime creationAt;
+    LocalDateTime createdAt;
     List<RoleDtoResponse> roles = new ArrayList<>();
     List<ProjectDtoResponse> projects = new ArrayList<>();
 }

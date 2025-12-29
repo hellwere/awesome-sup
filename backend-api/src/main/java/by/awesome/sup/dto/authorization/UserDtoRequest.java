@@ -19,5 +19,5 @@ public class UserDtoRequest {
     String password;
     @NotBlank
     String email;
-    List<RoleDtoRequest> roles = new ArrayList<>();
+    List<String> roleList = new ArrayList<>();
 }

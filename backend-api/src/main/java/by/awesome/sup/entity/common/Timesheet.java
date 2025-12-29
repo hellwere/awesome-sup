@@ -29,7 +29,7 @@ public class Timesheet {
     String owner;
 
     @UpdateTimestamp
-    @Column(name = "logged_at", nullable = false, updatable = false)
+    @Column(name = "logged_at", nullable = false)
     LocalDateTime loggedAt;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -42,5 +42,4 @@ public class Timesheet {
     @ManyToOne
     @JoinColumn(name = "task_id")
     Task task;
-
 }

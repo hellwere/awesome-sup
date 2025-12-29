@@ -15,5 +15,5 @@ public class AttachmentDtoResponse {
     Long length;
     @NotNull
     FileDtoResponse file;
-    LocalDateTime updatedAt;
+    LocalDateTime createdAt;
 }

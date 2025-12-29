@@ -1,5 +1,6 @@
 package by.awesome.sup.service.common;
 
+import by.awesome.sup.config.security.jwt.JwtService;
 import by.awesome.sup.dto.common.TimesheetDtoRequest;
 import by.awesome.sup.dto.common.TimesheetDtoResponse;
 import by.awesome.sup.dto.common.TimesheetUpdateDtoRequest;
@@ -32,29 +33,31 @@ public class TimesheetService {
     TimesheetRepository repository;
     TimesheetMapper mapper;
 
-    @PreAuthorize("hasAuthority('TIMESHEET_CREATE') or hasAuthority('PERMISSION_CREATE')")
-    public TimesheetDtoResponse add(Project project, TimesheetDtoRequest taskDto) {
-        Timesheet createEntity = mapper.toCreateEntity(taskDto);
+    public TimesheetDtoResponse add(Project project, TimesheetDtoRequest timesheetDtoRequest) {
+        Timesheet createEntity = mapper.toCreateEntity(timesheetDtoRequest);
+        createEntity.setOwner(JwtService.getAuthUserName());
         project.getTimesheets().add(createEntity);
+        createEntity.setProject(project);
         Timesheet timesheet = repository.save(createEntity);
         return mapper.toDto(timesheet);
     }
 
-    @PreAuthorize("hasAuthority('TIMESHEET_CREATE') or hasAuthority('PERMISSION_CREATE')")
     public TimesheetDtoResponse add(Task task, TimesheetDtoRequest taskDto) {
         Timesheet createEntity = mapper.toCreateEntity(taskDto);
+        createEntity.setOwner(JwtService.getAuthUserName());
         task.getTimesheets().add(createEntity);
+        createEntity.setTask(task);
         Timesheet timesheet = repository.save(createEntity);
         return mapper.toDto(timesheet);
     }
 
-    @PreAuthorize("hasAuthority('TIMESHEET_READ') or hasAuthority('PERMISSION_CREATE')")
+    @PreAuthorize("hasAuthority('TIMESHEET_READ') or hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'TIMESHEET', 'READ')")
     public TimesheetDtoResponse findById(Long id) {
         Timesheet task = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Timesheet with id=" + id + " not exists!"));
         return mapper.toDto(task);
     }
 
-    @PreAuthorize("hasAuthority('TIMESHEET_UPDATE') or hasAuthority('PERMISSION_CREATE')")
+    @PreAuthorize("hasAuthority('TIMESHEET_UPDATE') or hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'TIMESHEET', 'UPDATE')")
     public TimesheetDtoResponse update(TimesheetUpdateDtoRequest request) {
         Long id = request.getId();
         Timesheet timesheet = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Timesheet", "id", id));
@@ -63,11 +66,18 @@ public class TimesheetService {
         return mapper.toDto(newProject);
     }
 
-    @PreAuthorize("hasAuthority('TIMESHEET_DELETE') or hasAuthority('PERMISSION_CREATE')")
+    @PreAuthorize("hasAuthority('TIMESHEET_DELETE') or hasAuthority('PERMISSION_CREATE') or hasPermission(#id, 'TIMESHEET', 'DELETE')")
     public TimesheetDtoResponse delete(Long id) {
         Timesheet timesheet = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Timesheet", "id", id));
         repository.delete(timesheet);
         return mapper.toDto(timesheet);
+    }
+
+    public List<TimesheetDtoResponse> findByOwner(int page) {
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        String owner = JwtService.getAuthUserName();
+        Iterable<Timesheet> timesheets = repository.findByOwner(owner, pageable);
+        return StreamSupport.stream(timesheets.spliterator(), false).map(mapper::toDto).toList();
     }
 
     @PreAuthorize("hasAuthority('TIMESHEET_READ') or hasAuthority('PERMISSION_CREATE')")

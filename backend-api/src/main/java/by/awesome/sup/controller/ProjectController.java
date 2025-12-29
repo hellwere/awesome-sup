@@ -2,6 +2,7 @@ package by.awesome.sup.controller;
 
 import by.awesome.sup.dto.attachment.AttachmentDtoRequest;
 import by.awesome.sup.dto.attachment.AttachmentDtoResponse;
+import by.awesome.sup.dto.attachment.AttachmentPayloadDtoResponse;
 import by.awesome.sup.dto.attachment.FileDtoRequest;
 import by.awesome.sup.dto.common.CommentDtoRequest;
 import by.awesome.sup.dto.common.CommentDtoResponse;
@@ -19,6 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -68,8 +70,26 @@ public class ProjectController {
         return service.addComment(id, commentDtoRequest);
     }
 
+    @PutMapping("/{id}/comment")
+    public CommentDtoResponse updateComment(@PathVariable Long id, @RequestParam Long commentId, @Valid @RequestBody CommentDtoRequest commentDtoRequest) {
+        return service.updateComment(id, commentId, commentDtoRequest);
+    }
+
+    @DeleteMapping("/{id}/comment")
+    public CommentDtoResponse deleteComment(@PathVariable Long id, @RequestParam Long commentId) {
+        return service.deleteComment(id, commentId);
+    }
+
+    @GetMapping("/{id}/attachment")
+    public AttachmentPayloadDtoResponse get(@PathVariable Long id, @RequestParam Long attachmentId) {
+        return service.findAttachmentById(id, attachmentId);
+    }
+
     @PostMapping("/{id}/attachment")
     public AttachmentDtoResponse addAttachment(@PathVariable Long id, MultipartFile file) throws IOException {
+        if (file == null) {
+            throw new FileNotFoundException("Empty file, check file payload!");
+        }
         FileDtoRequest fileDtoRequest = new FileDtoRequest();
         fileDtoRequest.setData(file.getBytes());
 
@@ -78,6 +98,11 @@ public class ProjectController {
         attachmentDto.setLength(file.getSize());
         attachmentDto.setFile(fileDtoRequest);
         return service.addAttachment(id, attachmentDto);
+    }
+
+    @DeleteMapping("/{id}/attachment")
+    public AttachmentDtoResponse deleteAttachment(@PathVariable Long id, @RequestParam Long attachmentId) {
+        return service.deleteAttachment(id, attachmentId);
     }
 
     @PostMapping("/{id}/timesheet")

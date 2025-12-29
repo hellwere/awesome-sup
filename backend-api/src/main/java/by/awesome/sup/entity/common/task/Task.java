@@ -1,6 +1,7 @@
 package by.awesome.sup.entity.common.task;
 
 import by.awesome.sup.entity.attachment.Attachment;
+import by.awesome.sup.entity.authorization.User;
 import by.awesome.sup.entity.common.Comment;
 import by.awesome.sup.entity.common.Priority;
 import by.awesome.sup.entity.common.Timesheet;
@@ -8,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,9 +33,12 @@ public class Task {
     Status status;
     @Enumerated(EnumType.STRING)
     List<Tag> tags = new ArrayList<>();
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    LocalDateTime updatedAt;
     @CreationTimestamp
-    @Column(name = "creation_at", nullable = false, updatable = false)
-    LocalDateTime creationAt;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    LocalDateTime createdAt;
     Integer estimate;
     @Enumerated(EnumType.STRING)
     Priority priority;
@@ -57,4 +62,14 @@ public class Task {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Timesheet> timesheets = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "task_members", schema = "sup",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "users_id")
+    )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    List<User> users = new ArrayList<>();
 }

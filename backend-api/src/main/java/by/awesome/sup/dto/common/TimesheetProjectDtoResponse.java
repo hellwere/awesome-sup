@@ -1,4 +1,4 @@
-package by.awesome.sup.dto.common.project;
+package by.awesome.sup.dto.common;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -6,8 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProjectUserDtoResponse {
+public class TimesheetProjectDtoResponse {
     Long id;
     String name;
-    String login;
 }

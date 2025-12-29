@@ -25,14 +25,11 @@ public class Attachment {
     Long id;
     String format;
     Long length;
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     String owner;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "file_id")
     File file;
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
-    LocalDateTime updatedAt;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     LocalDateTime createdAt;

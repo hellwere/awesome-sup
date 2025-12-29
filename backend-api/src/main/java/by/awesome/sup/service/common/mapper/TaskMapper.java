@@ -5,10 +5,7 @@ import by.awesome.sup.dto.common.task.TaskDtoResponse;
 import by.awesome.sup.dto.common.task.TaskUpdateDtoRequest;
 import by.awesome.sup.entity.common.task.Task;
 import by.awesome.sup.service.attachment.mapper.FileMapper;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", uses = FileMapper.class)
 public interface TaskMapper {
@@ -16,6 +13,7 @@ public interface TaskMapper {
     Task toEntity(TaskUpdateDtoRequest taskUpdateDtoRequest);
     @Named("merge")
     @Mapping(target = "id", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void merge(TaskUpdateDtoRequest dto, @MappingTarget Task task);
 
     @Mapping(target = "id", ignore = true)

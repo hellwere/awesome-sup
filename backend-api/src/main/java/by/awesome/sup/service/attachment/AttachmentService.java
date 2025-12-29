@@ -27,20 +27,17 @@ public class AttachmentService {
     AttachmentMapper mapper;
 
     @Transactional(readOnly = true)
-    @PreAuthorize("hasAuthority('ATTACHMENT_READ') or hasAuthority('PERMISSION_CREATE')")
     public AttachmentPayloadDtoResponse findById(Long id) {
         Attachment attachment = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Attachment", "id", id));
         return mapper.toPayloadDto(attachment);
     }
 
-    @PreAuthorize("hasAuthority('ATTACHMENT_DELETE') or hasAuthority('PERMISSION_CREATE')")
     public AttachmentDtoResponse delete(Long id) {
         Attachment attachment = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Attachment", "id", id));
         repository.delete(attachment);
         return mapper.toDto(attachment);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public AttachmentDtoResponse add(Project project, AttachmentDtoRequest attachmentDtoRequest) {
         Attachment attachment = mapper.toEntity(attachmentDtoRequest);
         attachment.setOwner(JwtService.getAuthUserName());
@@ -50,7 +47,6 @@ public class AttachmentService {
         return mapper.toDto(attachment);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public AttachmentDtoResponse add(Task task, AttachmentDtoRequest attachmentDtoRequest) {
         Attachment attachment = mapper.toEntity(attachmentDtoRequest);
         attachment.setOwner(JwtService.getAuthUserName());

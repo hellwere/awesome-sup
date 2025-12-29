@@ -27,17 +27,19 @@ public class User implements UserDetails {
     @SequenceGenerator(name = "usersSq", sequenceName = "users_sq", schema = "sup", allocationSize = 1)
     @GeneratedValue(generator = "usersSq", strategy = GenerationType.SEQUENCE)
     Long id;
+    @Column(nullable = false)
     String name;
     @Column(nullable = false, unique = true)
     String login;
+    @Column(nullable = false)
     String password;
     @Column(nullable = false, unique = true)
     String email;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    LocalDateTime creationAt;
+    LocalDateTime createdAt;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles", schema = "sup",
             joinColumns = @JoinColumn(name = "users_id"),
@@ -47,7 +49,7 @@ public class User implements UserDetails {
     @EqualsAndHashCode.Exclude
     List<Role> roles = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "users")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<Project> projects = new ArrayList<>();

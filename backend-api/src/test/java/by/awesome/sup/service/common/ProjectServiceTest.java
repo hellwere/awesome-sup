@@ -9,6 +9,7 @@ import by.awesome.sup.entity.common.project.Project;
 import by.awesome.sup.repository.CommentRepository;
 import by.awesome.sup.repository.ProjectRepository;
 import by.awesome.sup.service.attachment.AttachmentService;
+import by.awesome.sup.service.authorization.UserService;
 import by.awesome.sup.service.common.mapper.CommentMapper;
 import by.awesome.sup.service.common.mapper.ProjectMapper;
 import jakarta.annotation.PostConstruct;
@@ -35,12 +36,13 @@ class ProjectServiceTest {
     CommentService commentService;
     AttachmentService attachmentService;
     TimesheetService timesheetService;
+    UserService userService;
     ProjectRepository repository = Mockito.mock(ProjectRepository.class);
 
 
     @PostConstruct
     private void init() {
-        service = new ProjectService(repository, mapper, taskService, commentService, attachmentService, timesheetService);
+        service = new ProjectService(repository, mapper, taskService, commentService, attachmentService, timesheetService, userService);
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(User
                 .withUsername("login")
                 .password("password")

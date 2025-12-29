@@ -14,4 +14,5 @@ public class CommentDtoResponse {
     @NotBlank
     String data;
     LocalDateTime updatedAt;
+    LocalDateTime createdAt;
 }

@@ -27,27 +27,23 @@ public class CommentService {
     CommentRepository repository;
     CommentMapper mapper;
 
-    @PreAuthorize("hasAuthority('COMMENT_READ') or hasAuthority('PERMISSION_CREATE')")
     public CommentDtoResponse findById(Long id) {
         Comment comment = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Comment with id=" + id + " not exists!"));
         return mapper.toDto(comment);
     }
 
-    @PreAuthorize("hasAuthority('COMMENT_UPDATE') or hasAuthority('PERMISSION_CREATE')")
     public CommentDtoResponse update(Long id, CommentDtoRequest commentDtoRequest) {
         Comment comment = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Comment", "id", id));
         comment.setData(commentDtoRequest.getData());
         return mapper.toDto(repository.save(comment));
     }
 
-    @PreAuthorize("hasAuthority('COMMENT_DELETE') or hasAuthority('PERMISSION_CREATE')")
     public CommentDtoResponse delete(Long id) {
         Comment comment = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Comment", "id", id));
         repository.delete(comment);
         return mapper.toDto(comment);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public CommentDtoResponse add(Project project, CommentDtoRequest commentDtoRequest) {
         Comment comment = mapper.toEntity(commentDtoRequest);
         comment.setOwner(JwtService.getAuthUserName());
@@ -57,7 +53,6 @@ public class CommentService {
         return mapper.toDto(comment);
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE') or hasAuthority('PROJECT_CREATE')")
     public CommentDtoResponse add(Task task, CommentDtoRequest commentDtoRequest) {
         Comment comment = mapper.toEntity(commentDtoRequest);
         comment.setOwner(JwtService.getAuthUserName());

@@ -24,7 +24,7 @@ public class Comment {
     @GeneratedValue(generator = "commentSq", strategy = GenerationType.SEQUENCE)
     Long id;
     String data;
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     String owner;
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)

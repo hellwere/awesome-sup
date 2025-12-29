@@ -32,4 +32,5 @@ public class TaskUpdateDtoRequest {
     List<CommentDtoResponse> comments = new ArrayList<>();
     @Valid
     List<AttachmentDtoRequest> attachment;
+    List<String> userList = new ArrayList<>();
 }
